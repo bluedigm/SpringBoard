@@ -1,6 +1,6 @@
 package com.bluedigm.springboard.domain;
 
-public class UserVO {
+public class UserDeleteVO {
 	String email;
 	String nick;
 	String pw;

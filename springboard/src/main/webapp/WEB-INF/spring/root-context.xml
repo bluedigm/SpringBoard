@@ -21,7 +21,7 @@
 			value="com.mysql.cj.jdbc.Driver">
 		</property>
 		<property name="url"
-			value="jdbc:mysql://vip.sejong.ac.kr:3306/springboard?serverTimezone=UTC">
+			value="jdbc:mysql://vip.sejong.ac.kr:3306/springboard?serverTimezone=UTC&amp;useSSL=false">
 		</property>
 		<property name="username" value="vip"></property>
 		<property name="password" value="vip.sejong.ac.kr"></property>

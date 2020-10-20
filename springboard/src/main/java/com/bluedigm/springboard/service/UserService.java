@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bluedigm.springboard.domain.UserVO;
+import com.bluedigm.springboard.domain.UserCreateVO;
+import com.bluedigm.springboard.domain.UserDeleteVO;
+import com.bluedigm.springboard.entity.UserDAO;
 import com.bluedigm.springboard.repository.UserRepo;
 
 @Service
@@ -17,19 +19,37 @@ public class UserService {
 	@Autowired
 	UserRepo userRepo;
 
-	public UserVO insert(UserVO user) {
+	public UserCreateVO create(UserCreateVO user) {
+		UserDAO dao = new UserDAO();
+		dao.setUsername(user.getUsername());
+		dao.setNickname(user.getNickname());
+		dao.setEmail(user.getEmail());
+		dao.setPassword(user.getPassword1());
+		userRepo.insert(dao);
 		return user;
 	}
 
-	public void delete(UserVO user) {
+	public void delete(UserDeleteVO user) {
 
 	}
 
-	public List<UserVO> search() {
-		return new LinkedList<UserVO>();
+	public void login(UserCreateVO user) {
+
 	}
 
-	public UserVO update(UserVO user) {
+	public void portal(UserCreateVO user) {
+
+	}
+
+	public void profile(UserCreateVO user) {
+
+	}
+
+	public List<UserCreateVO> search() {
+		return new LinkedList<UserCreateVO>();
+	}
+
+	public UserCreateVO update(UserCreateVO user) {
 		return user;
 	}
 }

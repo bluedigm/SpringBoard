@@ -7,7 +7,7 @@
 </head>
 <body>
 	<h1>Create Page</h1>
-	<a href="/home">Return to Main page</a>
+	<a href="home">Return to Main page</a>
 	<p>계정을 생성합니다.</p>
 	<form action="/user/create" method="post">
 		<div>
@@ -28,8 +28,8 @@
 			<label for="email">Email</label>
 		</div>
 		<div>
-			<input type="email" th:value="${res.email}" placeholder="email"
-				name="email@email">
+			<input type="email" th:value="${res.email}" placeholder="email@email"
+				name="email">
 		</div>
 		<div>
 			<label for="password1">Password</label>

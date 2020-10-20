@@ -5,6 +5,7 @@ import java.util.Date;
 public class UserDAO {
 	String username;
 	String nickname;
+	String email;
 	String password;
 	Date createAt;
 	Date updateAt;
@@ -23,6 +24,14 @@ public class UserDAO {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {
