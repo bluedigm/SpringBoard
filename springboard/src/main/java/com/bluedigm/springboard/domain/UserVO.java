@@ -1,6 +1,6 @@
 package com.bluedigm.springboard.domain;
 
-public class TestVO {
+public class UserVO {
 	String email;
 	String nick;
 	String pw;

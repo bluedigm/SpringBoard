@@ -1,32 +1,32 @@
 package com.bluedigm.springboard.entity;
 
 public class UserDAO {
-	String email;
-	String nick;
-	String password;
+	String key;
+	String str;
+	String num;
 
-	public String getEmail() {
-		return email;
+	public String getKey() {
+		return key;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setKey(String key) {
+		this.key = key;
 	}
 
-	public String getNick() {
-		return nick;
+	public String getStr() {
+		return str;
 	}
 
-	public void setNick(String nick) {
-		this.nick = nick;
+	public void setStr(String str) {
+		this.str = str;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getNum() {
+		return num;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setNum(String num) {
+		this.num = num;
 	}
 
 }

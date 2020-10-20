@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//dtd mapper 3.0//en"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.message">
+	<insert id="insertA">
+		insert into example(key,str,num) values(#{email},#{nick},#{password})
+		select * from example where (key like '%#{}%' and str like '%#{}%')
+	</insert>
+</mapper>

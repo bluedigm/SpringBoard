@@ -10,10 +10,10 @@ import com.bluedigm.springboard.entity.UserDAO;
 public class UserRepo {
 	@Autowired
 	SqlSession sql;
-	static String namespace = "com.bluedigm.springboard.entity.UserDAO";
+	static String namespace = "namespaces.domainA";
 
-	public void insert(UserDAO user)
+	public void insert(UserDAO example)
 	{
-		sql.insert(namespace+".insertUser",user);
+		sql.insert(namespace+".insertA",example);
 	}
 }
