@@ -3,8 +3,8 @@
 PUBLIC "-//mybatis.org//dtd mapper 3.0//en"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mappers.board">
-	<insert id="insertA">
-		insert into example(key,str,num) values(#{email},#{nick},#{password})
-		select * from example where (key like '%#{}%' and str like '%#{}%')
+	<insert id="insert">
+		insert into board(title,text)
+		values(#{title},#{text})
 	</insert>
 </mapper>

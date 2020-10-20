@@ -1,32 +1,51 @@
 package com.bluedigm.springboard.entity;
 
+import java.util.Date;
+
 public class UserDAO {
-	String key;
-	String str;
-	String num;
+	String username;
+	String nickname;
+	String password;
+	Date createAt;
+	Date updateAt;
 
-	public String getKey() {
-		return key;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public String getStr() {
-		return str;
+	public String getNickname() {
+		return nickname;
 	}
 
-	public void setStr(String str) {
-		this.str = str;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
-	public String getNum() {
-		return num;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setNum(String num) {
-		this.num = num;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
+	public Date getCreateAt() {
+		return createAt;
+	}
+
+	public void setCreateAt(Date createAt) {
+		this.createAt = createAt;
+	}
+
+	public Date getUpdateAt() {
+		return updateAt;
+	}
+
+	public void setUpdateAt(Date updateAt) {
+		this.updateAt = updateAt;
+	}
 }

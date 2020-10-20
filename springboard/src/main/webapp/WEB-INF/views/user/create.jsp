@@ -1,4 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
+	language="java"%>
 <html xmlns:th="http://thymeleaf.org">
 <head>
 <title>User Create</title>
@@ -7,63 +9,43 @@
 	<h1>Create Page</h1>
 	<a href="/home">Return to Main page</a>
 	<p>계정을 생성합니다.</p>
-	<div id="body">
-		<form action="/user/create" method="post">
-			<div class="control-group mb-3">
-				<div>
-					<label class="control-label" for="email">Email <input
-						th:if="${res.usable}" type="checkbox" checked="checked"
-						disabled="disabled"></label>
-				</div>
-				<div>
-					<input type="email" class="form-control" th:value="${res.email}"
-						placeholder="email@email" name="email">
-				</div>
-			</div>
-			<div class="control-group mb-3">
-				<div>
-					<label class="control-label" for="nickname">Nickname</label>
-				</div>
-				<div>
-					<input type="text" class="form-control" th:value="${res.nickname}"
-						placeholder="nickname" name="nickname">
-				</div>
-			</div>
-			<div class="control-group mb-3">
-				<div>
-					<label class="control-label" for="password1">Password</label>
-				</div>
-				<div>
-					<input type="password" class="form-control" placeholder="password"
-						name="password1">
-				</div>
-			</div>
-			<div class="control-group mb-3">
-				<div>
-					<label class="control-label" for="password2">One More
-						Password</label>
-				</div>
-				<div>
-					<input type="password" class="form-control" placeholder="password"
-						name="password2">
-				</div>
-			</div>
-			<div class="control-group mb-3">
-				<div>
-					<label class="control-label" for="acceptCode">Link Access <input
-						type="checkbox" name="acceptCode" th:checked="${res.acceptCode}">
-					</label>
-				</div>
-				<div>
-					<label class="control-label" for="acceptOpen">Open Access <input
-						type="checkbox" name="acceptOpen" th:checked="${res.acceptOpen}">
-					</label>
-				</div>
-			</div>
-			<div>
-				<button type="submit" class="btn btn-primary">Create User</button>
-			</div>
-		</form>
-	</div>
+	<form action="/user/create" method="post">
+		<div>
+			<label for="username">Username</label>
+		</div>
+		<div>
+			<input type="text" th:value="${res.username}" placeholder="username"
+				name="username">
+		</div>
+		<div>
+			<label for="nickname">Nickname</label>
+		</div>
+		<div>
+			<input type="text" th:value="${res.nickname}" placeholder="nickname"
+				name="nickname">
+		</div>
+		<div>
+			<label for="email">Email</label>
+		</div>
+		<div>
+			<input type="email" th:value="${res.email}" placeholder="email"
+				name="email@email">
+		</div>
+		<div>
+			<label for="password1">Password</label>
+		</div>
+		<div>
+			<input type="password" placeholder="password" name="password1">
+		</div>
+		<div>
+			<label for="password2">One More Password</label>
+		</div>
+		<div>
+			<input type="password" placeholder="password" name="password2">
+		</div>
+		<div>
+			<button type="submit">Create User</button>
+		</div>
+	</form>
 </body>
 </html>

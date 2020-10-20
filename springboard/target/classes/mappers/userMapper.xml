@@ -5,15 +5,19 @@ PUBLIC "-//mybatis.org//dtd mapper 3.0//en"
 <mapper namespace="mappers.user">
 	<insert id="insert">
 		insert into user(username,nickname,password)
-		values(#{email},#{nick},#{password})
+		values(#{username},#{nickname},#{password})
 	</insert>
+
+	<delete id="delete">
+	</delete>
 	<select id="select">
-		select * from example
-		where (username =='%#{}%')
+		insert into user(username,nickname,password)
+		values(#{username},#{nickname},#{password})
 	</select>
 	<select id="search">
-		select * from user where (key
-		like '%#{}%' and str
-		like '%#{}%')
+		insert into user(username,nickname,password)
+		values(#{username},#{nickname},#{password})
 	</select>
+	<update id="update">
+	</update>
 </mapper>
