@@ -1,5 +1,9 @@
 package com.bluedigm.springboard.controller;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +36,10 @@ public class UserController {
 	@RequestMapping(value = "/user/create", method = RequestMethod.POST)
 	public ModelAndView postUserCreate(UserCreateVO user) {
 		logger.info("User Controller - Post User Create");
-		ModelAndView mav = new ModelAndView();
 		userService.create(user);
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("res", user);
+		mav.setViewName("redirect:/user/login");
 		return mav;
 	}
 
@@ -48,8 +54,10 @@ public class UserController {
 	@RequestMapping(value = "/user/delete", method = RequestMethod.POST)
 	public ModelAndView postUserDelete(UserDeleteVO user) {
 		logger.info("User Controller - Post User Delete");
-		ModelAndView mav = new ModelAndView();
 		userService.delete(user);
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("res", user);
+		mav.setViewName("redirect:/user/login");
 		return mav;
 	}
 
@@ -64,14 +72,19 @@ public class UserController {
 	@RequestMapping(value = "/user/login", method = RequestMethod.POST)
 	public ModelAndView postUserLogin(UserLoginVO user) {
 		logger.info("User Controller - Post User Login");
+		userService.login(user);
 		ModelAndView mav = new ModelAndView();
+		mav.addObject("res", user);
+		mav.setViewName("redirect:/user/portal");
 		return mav;
 	}
 
 	@RequestMapping(value = "/user/portal", method = RequestMethod.GET)
-	public ModelAndView getUserPortal() {
+	public ModelAndView getUserPortal(Locale locale) {
 		logger.info("User Controller - Get User Portal");
 		ModelAndView mav = new ModelAndView();
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+		mav.addObject("time", dateFormat.format(new Date()));
 		mav.setViewName("/user/portal");
 		return mav;
 	}
@@ -96,6 +109,8 @@ public class UserController {
 	public ModelAndView postUserSearch(UserSearchVO user) {
 		logger.info("User Controller - Post User Search");
 		ModelAndView mav = new ModelAndView();
+		mav.addObject("res", user);
+		mav.setViewName("redirect:/user/search");
 		return mav;
 	}
 
@@ -111,6 +126,8 @@ public class UserController {
 	public ModelAndView postUserUpdate(UserUpdateVO user) {
 		logger.info("User Controller - Post User Update");
 		ModelAndView mav = new ModelAndView();
+		mav.addObject("res", user);
+		mav.setViewName("redirect:/user/profile");
 		return mav;
 	}
 }

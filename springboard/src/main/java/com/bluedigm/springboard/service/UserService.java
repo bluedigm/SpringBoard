@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.bluedigm.springboard.domain.UserCreateVO;
 import com.bluedigm.springboard.domain.UserDeleteVO;
+import com.bluedigm.springboard.domain.UserLoginVO;
 import com.bluedigm.springboard.entity.UserDAO;
 import com.bluedigm.springboard.repository.UserRepo;
 
@@ -33,7 +34,7 @@ public class UserService {
 
 	}
 
-	public void login(UserCreateVO user) {
+	public void login(UserLoginVO user) {
 
 	}
 

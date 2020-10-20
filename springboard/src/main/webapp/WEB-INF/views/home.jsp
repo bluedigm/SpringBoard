@@ -6,8 +6,9 @@
 <title>Home</title>
 </head>
 <body>
-	<h1>Hello world!</h1>
-
-	<P>The time on the server is ${serverTime}.</P>
+	<p>#{time}</p>
+	<a href="/user/create">Go to Create User</a>
+	<a href="/user/login">Go to Login User</a>
+	<a href="/user/search">Go to Search User</a>
 </body>
 </html>

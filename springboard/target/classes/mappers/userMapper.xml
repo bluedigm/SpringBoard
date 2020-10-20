@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//dtd mapper 3.0//en"
 		where {nickname like
 		'%#{nickname}%' and email like '%#{email}%'}
 	</select>
-	<select id="searchUsernameNicknameEmail">
+	<select id="search">
 		select * from user
 		where {username like
 		'%#{username}%' and nickname like
