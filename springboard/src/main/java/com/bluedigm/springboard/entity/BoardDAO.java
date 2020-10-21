@@ -2,19 +2,19 @@ package com.bluedigm.springboard.entity;
 
 import java.util.Date;
 
-public class messageDAO {
-	int id;
+public class BoardDAO {
+	String link;
 	String title;
 	String text;
 	Date createAt;
 	Date updateAt;
 
-	public int getId() {
-		return id;
+	public String getLink() {
+		return link;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setLink(String link) {
+		this.link = link;
 	}
 
 	public String getTitle() {

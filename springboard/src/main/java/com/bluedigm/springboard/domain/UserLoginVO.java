@@ -1,31 +1,22 @@
 package com.bluedigm.springboard.domain;
 
 public class UserLoginVO {
-	String email;
-	String nick;
-	String pw;
+	String username;
+	String password;
 
-	public String getEmail() {
-		return email;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public String getNick() {
-		return nick;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setNick(String nick) {
-		this.nick = nick;
-	}
-
-	public String getPw() {
-		return pw;
-	}
-
-	public void setPw(String pw) {
-		this.pw = pw;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }

@@ -6,9 +6,15 @@
 <title>Home</title>
 </head>
 <body>
-	<p>#{time}</p>
-	<a href="/user/create">Go to Create User</a>
-	<a href="/user/login">Go to Login User</a>
-	<a href="/user/search">Go to Search User</a>
+	<p>${time}</p>
+	<p>
+		<a href="/user/create">Go to Create User</a>
+	</p>
+	<p>
+		<a href="/user/login">Go to Login User</a>
+	</p>
+	<p>
+		<a href="/user/search">Go to Search User</a>
+	</p>
 </body>
 </html>

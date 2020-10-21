@@ -14,7 +14,7 @@
 			<label for="username">Username</label>
 		</div>
 		<div>
-			<input type="text" th:value="${res.username}" placeholder="username"
+			<input type="text" value="${res.username}" placeholder="username"
 				name="username">
 		</div>
 		<div>

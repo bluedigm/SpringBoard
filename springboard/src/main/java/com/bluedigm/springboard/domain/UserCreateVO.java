@@ -3,9 +3,9 @@ package com.bluedigm.springboard.domain;
 public class UserCreateVO {
 	String username;
 	String nickname;
-	String email;
 	String password1;
 	String password2;
+	String email;
 
 	public String getUsername() {
 		return username;
@@ -21,14 +21,6 @@ public class UserCreateVO {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getPassword1() {
@@ -47,4 +39,11 @@ public class UserCreateVO {
 		this.password2 = password2;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }

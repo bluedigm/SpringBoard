@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import com.bluedigm.springboard.domain.UserCreateVO;
 import com.bluedigm.springboard.domain.UserDeleteVO;
 import com.bluedigm.springboard.domain.UserLoginVO;
+import com.bluedigm.springboard.domain.UserProfileVO;
+import com.bluedigm.springboard.domain.UserUpdateVO;
 import com.bluedigm.springboard.entity.UserDAO;
 import com.bluedigm.springboard.repository.UserRepo;
 
@@ -20,37 +22,88 @@ public class UserService {
 	@Autowired
 	UserRepo userRepo;
 
-	public UserCreateVO create(UserCreateVO user) {
+	public boolean create(UserCreateVO vo) {
 		UserDAO dao = new UserDAO();
-		dao.setUsername(user.getUsername());
-		dao.setNickname(user.getNickname());
-		dao.setEmail(user.getEmail());
-		dao.setPassword(user.getPassword1());
-		userRepo.insert(dao);
-		return user;
+		dao.setUsername(vo.getUsername());
+		dao.setNickname(vo.getNickname());
+		dao.setEmail(vo.getEmail());
+		dao.setPassword(vo.getPassword1());
+		return userRepo.insert(dao);
 	}
 
-	public void delete(UserDeleteVO user) {
+	public UserDeleteVO delete(String username) {
+		if (username != null) {
+			UserDAO dao = userRepo.select(username);
+			UserDeleteVO vo = new UserDeleteVO();
+			vo.setUsername(dao.getUsername());
+			vo.setNickname(dao.getNickname());
+			return vo;
+		}
+		return null;
+	}
+
+	public boolean delete(UserDeleteVO vo) {
+		if (vo.getPassword1().equals(vo.getPassword2())) {
+			UserDAO dao = userRepo.select(vo.getUsername());
+			if (dao != null)
+				if (dao.getPassword().equals(vo.getPassword1()))
+					return userRepo.delete(vo.getUsername());
+		}
+		return false;
+	}
+
+	public boolean login(UserLoginVO vo) {
+		UserDAO dao = userRepo.select(vo.getUsername());
+		if (dao != null)
+			return dao.getPassword().equals(vo.getPassword());
+		return false;
+	}
+
+	public void portal(String username) {
 
 	}
 
-	public void login(UserLoginVO user) {
-
-	}
-
-	public void portal(UserCreateVO user) {
-
-	}
-
-	public void profile(UserCreateVO user) {
-
+	public UserProfileVO profile(String username) {
+		if (username != null) {
+			UserDAO dao = userRepo.select(username);
+			UserProfileVO vo = new UserProfileVO();
+			vo.setUsername(dao.getUsername());
+			vo.setNickname(dao.getNickname());
+			vo.setEmail(dao.getEmail());
+			vo.setCreateAt(dao.getCreateAt());
+			vo.setUpdateAt(dao.getUpdateAt());
+			return vo;
+		}
+		return null;
 	}
 
 	public List<UserCreateVO> search() {
 		return new LinkedList<UserCreateVO>();
 	}
 
-	public UserCreateVO update(UserCreateVO user) {
-		return user;
+	public UserUpdateVO update(String username) {
+		if (username != null) {
+			UserDAO dao = userRepo.select(username);
+			UserUpdateVO vo = new UserUpdateVO();
+			vo.setUsername(dao.getUsername());
+			vo.setNickname(dao.getNickname());
+			vo.setEmail(dao.getEmail());
+			return vo;
+		}
+		return null;
+	}
+
+	public boolean update(String username, UserUpdateVO vo) {
+		if (username != null) {
+			UserDAO dao = userRepo.select(username);
+			if (vo.getPasswordOld().equals(dao.getPassword())) {
+				dao.setUsername(vo.getUsername());
+				dao.setNickname(vo.getNickname());
+				dao.setEmail(vo.getEmail());
+				dao.setPassword(vo.getPasswordNew1());
+			}
+			return userRepo.update(username, dao);
+		}
+		return false;
 	}
 }

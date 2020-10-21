@@ -6,9 +6,18 @@
 <title>User Profile</title>
 </head>
 <body>
-	<p>#{time}</p>
-	<a href="/user/delete">Go to Delete User</a>
-	<a href="/user/profile">Go to Profile User</a>
-	<a href="/user/search">Go to Search User</a>
+	<p>${time}</p>
+	<p>
+		<a href="/user/delete">Go to Delete User</a>
+	</p>
+	<p>
+		<a href="/user/logout">Go to Logout User</a>
+	</p>
+	<p>
+		<a href="/user/profile">Go to Profile User</a>
+	</p>
+	<p>
+		<a href="/user/search">Go to Search User</a>
+	</p>
 </body>
 </html>

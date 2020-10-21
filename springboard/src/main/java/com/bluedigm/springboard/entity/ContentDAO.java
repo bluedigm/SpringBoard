@@ -2,8 +2,10 @@ package com.bluedigm.springboard.entity;
 
 import java.util.Date;
 
-public class boardDAO {
+public class ContentDAO {
 	int id;
+	String user;
+	String board;
 	String title;
 	String text;
 	Date createAt;
@@ -15,6 +17,22 @@ public class boardDAO {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public String getBoard() {
+		return board;
+	}
+
+	public void setBoard(String board) {
+		this.board = board;
 	}
 
 	public String getTitle() {

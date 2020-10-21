@@ -25,13 +25,6 @@
 				name="nickname" readonly="readonly">
 		</div>
 		<div>
-			<label for="email">Email</label>
-		</div>
-		<div>
-			<input type="email" th:value="${res.email}" placeholder="email"
-				name="email@email" readonly="readonly">
-		</div>
-		<div>
 			<label for="password1">Password</label>
 		</div>
 		<div>

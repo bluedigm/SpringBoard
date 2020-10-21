@@ -20,12 +20,19 @@ public class UserRepo {
 		return sql.insert(namespace + ".insert", dao) > 0;
 	}
 
-	public boolean update(UserDAO dao) {
-		return sql.update(namespace + ".update", dao) > 0;
+	public boolean update(String username, UserDAO dao) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("old", username);
+		param.put("new", dao.getUsername());
+		param.put("nickname", dao.getNickname());
+		param.put("password", dao.getPassword());
+		param.put("email", dao.getEmail());
+
+		return sql.update(namespace + ".update", param) > 0;
 	}
 
 	public UserDAO select(String username) {
-		return sql.selectOne(namespace + "select", username);
+		return sql.selectOne(namespace + ".select", username);
 	}
 
 	public List<UserDAO> search(String username, String nickname, String email) {
@@ -36,7 +43,7 @@ public class UserRepo {
 		return sql.selectList(namespace + ".search", param);
 	}
 
-	public void delete(UserDAO dao) {
-		sql.delete(namespace + ".delete", dao);
+	public boolean delete(String username) {
+		return sql.delete(namespace + ".delete", username) > 0;
 	}
 }
