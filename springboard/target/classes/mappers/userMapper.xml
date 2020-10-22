@@ -5,42 +5,49 @@ PUBLIC "-//mybatis.org//dtd mapper 3.0//en"
 <mapper namespace="mappers.user">
 	<resultMap type="com.bluedigm.springboard.entity.UserDAO"
 		id="user">
-		<result property="username" column="username" />
-		<result property="nickname" column="nickname" />
-		<result property="password" column="password" />
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="nick" column="nick" />
 		<result property="email" column="email" />
+		<result property="password" column="password" />
 		<result property="createAt" column="time_create" />
 		<result property="updateAt" column="time_update" />
 	</resultMap>
-	<insert id="insert">
+	<insert id="insert" keyProperty="id">
 		insert into
-		user(username,nickname,password,email)
-		values(#{username},#{nickname},#{password},#{email})
+		user(name,nick,email,password)
+		values(#{name},#{nick},#{email},#{password})
 	</insert>
+	<update id="update">
+		update user
+		set name=#{name}, nick=#{nick},
+		email=#{email}, password=#{password}
+		where id=#{id}
+	</update>
 	<delete id="delete">
 		delete from user
-		where username=#{username}
+		where id=#{id}
 	</delete>
 	<select id="select" resultMap="user">
 		select * from user
 		where
-		username=#{username}
+		id=#{id}
 	</select>
-	<select id="search" resultMap="user">
+	<select id="selectName" resultMap="user">
 		select * from user
-		where {username
-		like
-		'%#{username}%' and
-		nickname like
-		'%#{nickname}%' and email like
-		'%#{email}%'}
+		where
+		name=#{name}
 	</select>
-	<update id="update">
-		update user
-		set username=#{new},
-		nickname=#{nickname},
-		password=#{password},
-		email=#{email}
-		where username=#{old}
-	</update>
+	<select id="searchAll" resultMap="user">
+		select * from user
+	</select>
+	<select id="searchLimitAll" resultMap="user">
+		select * from user
+		LIMIT
+		#{start} , #{size}
+	</select>
+	<select id="count" resultType="int">
+		select count(*) from
+		user
+	</select>
 </mapper>

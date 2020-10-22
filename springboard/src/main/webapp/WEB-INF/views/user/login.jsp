@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	language="java"%>
-<html xmlns:th="http://thymeleaf.org">
+<html>
 <head>
 <title>User Login</title>
 </head>
@@ -11,17 +11,17 @@
 	<p>계정을 로그인합니다.</p>
 	<form action="/user/login" method="post">
 		<div>
-			<label for="username">Username</label>
+			<label for="name">Username</label>
 		</div>
 		<div>
-			<input type="text" value="${res.username}" placeholder="username"
-				name="username">
+			<input type="text" value="${res.name}" placeholder="username"
+				name="name">
 		</div>
 		<div>
-			<label for="password">Password</label>
+			<label for="pw">Password</label>
 		</div>
 		<div>
-			<input type="password" placeholder="password" name="password">
+			<input type="password" placeholder="password" name="pw">
 		</div>
 		<div>
 			<button type="submit">Login User</button>

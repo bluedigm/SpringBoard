@@ -11,25 +11,25 @@
 	<p>계정을 확인합니다.</p>
 	<form action="/user/update" method="get">
 		<div>
-			<label for="username">Username</label>
+			<label for="name">Username</label>
 		</div>
 		<div>
-			<input type="text" value="${res.username}" placeholder="username"
-				name="username" readonly="readonly">
+			<input type="text" value="${res.name}" placeholder="username"
+				name="name" readonly="readonly">
 		</div>
 		<div>
-			<label for="nickname">Nickname</label>
+			<label for="nick">Nickname</label>
 		</div>
 		<div>
-			<input type="text" value="${res.nickname}" placeholder="nickname"
-				name="nickname" readonly="readonly">
+			<input type="text" value="${res.nick}" placeholder="nickname"
+				name="nick" readonly="readonly">
 		</div>
 		<div>
 			<label for="email">Email</label>
 		</div>
 		<div>
-			<input type="email" value="${res.email}" placeholder="email"
-				name="email@email" readonly="readonly">
+			<input type="email" value="${res.email}" placeholder="email@email"
+				name="email" readonly="readonly">
 		</div>
 		<div>
 			<label for="createAt">Create At</label>

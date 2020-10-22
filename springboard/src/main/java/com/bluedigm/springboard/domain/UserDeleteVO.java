@@ -1,40 +1,58 @@
 package com.bluedigm.springboard.domain;
 
 public class UserDeleteVO {
-	String username;
-	String nickname;
-	String password1;
-	String password2;
+	int id;
+	String name;
+	String nick;
+	String email;
+	String pw1;
+	String pw2;
 
-	public String getUsername() {
-		return username;
+	public int getId() {
+		return id;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getNickname() {
-		return nickname;
+	public String getName() {
+		return name;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getPassword1() {
-		return password1;
+	public String getNick() {
+		return nick;
 	}
 
-	public void setPassword1(String password1) {
-		this.password1 = password1;
+	public void setNick(String nick) {
+		this.nick = nick;
 	}
 
-	public String getPassword2() {
-		return password2;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setPassword2(String password2) {
-		this.password2 = password2;
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPw1() {
+		return pw1;
+	}
+
+	public void setPw1(String pw1) {
+		this.pw1 = pw1;
+	}
+
+	public String getPw2() {
+		return pw2;
+	}
+
+	public void setPw2(String pw2) {
+		this.pw2 = pw2;
 	}
 }

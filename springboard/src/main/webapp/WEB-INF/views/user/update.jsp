@@ -14,15 +14,15 @@
 			<label for="username">Username</label>
 		</div>
 		<div>
-			<input type="text" value="${res.username}" placeholder="username"
-				name="username">
+			<input type="text" value="${res.name}" placeholder="username"
+				name="name">
 		</div>
 		<div>
 			<label for="nickname">Nickname</label>
 		</div>
 		<div>
-			<input type="text" value="${res.nickname}" placeholder="nickname"
-				name="nickname">
+			<input type="text" value="${res.nick}" placeholder="nickname"
+				name="nick">
 		</div>
 		<div>
 			<label for="email">Email</label>
@@ -32,22 +32,22 @@
 				name="email">
 		</div>
 		<div>
-			<label for="passwordOld">Old Password</label>
+			<label for="pwOld">Old Password</label>
 		</div>
 		<div>
-			<input type="password" placeholder="password" name="passwordOld">
+			<input type="password" placeholder="password" name="pwOld">
 		</div>
 		<div>
-			<label for="passwordNew1">New Password</label>
+			<label for="pwNew1">New Password</label>
 		</div>
 		<div>
-			<input type="password" placeholder="password" name="passwordNew1">
+			<input type="password" placeholder="password" name="pwNew1">
 		</div>
 		<div>
-			<label for="passwordNew2">One More New Password</label>
+			<label for="pwNew2">One More New Password</label>
 		</div>
 		<div>
-			<input type="password" placeholder="password" name="passwordNew2">
+			<input type="password" placeholder="password" name="pwNew2">
 		</div>
 		<div>
 			<button type="submit">Update User</button>

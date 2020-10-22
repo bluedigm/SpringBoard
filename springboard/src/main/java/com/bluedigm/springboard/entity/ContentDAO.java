@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class ContentDAO {
 	int id;
-	String user;
-	String board;
+	int userId;
+	int boardId;
 	String title;
 	String text;
 	Date createAt;
@@ -19,20 +19,20 @@ public class ContentDAO {
 		this.id = id;
 	}
 
-	public String getUser() {
-		return user;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setUser(String user) {
-		this.user = user;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
-	public String getBoard() {
-		return board;
+	public int getBoardId() {
+		return boardId;
 	}
 
-	public void setBoard(String board) {
-		this.board = board;
+	public void setBoardId(int boardId) {
+		this.boardId = boardId;
 	}
 
 	public String getTitle() {

@@ -1,31 +1,45 @@
 package com.bluedigm.springboard.domain;
 
+import java.util.List;
+
+import com.bluedigm.springboard.entity.UserDAO;
+
 public class UserSearchVO {
-	String email;
-	String nick;
-	String pw;
+	List<UserDAO> userList;
+	int userPage;
+	int userMaxPage;
+	int userSize;
 
-	public String getEmail() {
-		return email;
+	public List<UserDAO> getUserList() {
+		return userList;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUserList(List<UserDAO> userList) {
+		this.userList = userList;
 	}
 
-	public String getNick() {
-		return nick;
+	public int getUserPage() {
+		return userPage;
 	}
 
-	public void setNick(String nick) {
-		this.nick = nick;
+	public void setUserPage(int userPage) {
+		this.userPage = userPage;
 	}
 
-	public String getPw() {
-		return pw;
+	public int getUserMaxPage() {
+		return userMaxPage;
 	}
 
-	public void setPw(String pw) {
-		this.pw = pw;
+	public void setUserMaxPage(int userMaxPage) {
+		this.userMaxPage = userMaxPage;
 	}
+
+	public int getUserSize() {
+		return userSize;
+	}
+
+	public void setUserSize(int userSize) {
+		this.userSize = userSize;
+	}
+
 }

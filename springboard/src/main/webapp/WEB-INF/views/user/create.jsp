@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	language="java"%>
-<html xmlns:th="http://thymeleaf.org">
+<html>
 <head>
 <title>User Create</title>
 </head>
@@ -14,21 +14,21 @@
 			<label for="username">Username</label>
 		</div>
 		<div>
-			<input type="text" th:value="${res.username}" placeholder="username"
+			<input type="text" value="${res.username}" placeholder="username"
 				name="username">
 		</div>
 		<div>
 			<label for="nickname">Nickname</label>
 		</div>
 		<div>
-			<input type="text" th:value="${res.nickname}" placeholder="nickname"
+			<input type="text" value="${res.nickname}" placeholder="nickname"
 				name="nickname">
 		</div>
 		<div>
 			<label for="email">Email</label>
 		</div>
 		<div>
-			<input type="email" th:value="${res.email}" placeholder="email@email"
+			<input type="email" value="${res.email}" placeholder="email@email"
 				name="email">
 		</div>
 		<div>

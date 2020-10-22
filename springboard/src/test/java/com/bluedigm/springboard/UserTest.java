@@ -22,8 +22,6 @@ public class UserTest {
 	public void testInsert() throws Exception {
 		try {
 			UserDAO dao = new UserDAO();
-			dao.setUsername("");
-			dao.setNickname("");
 			dao.setEmail("");
 			dao.setPassword("");
 			userRepo.insert(dao);
@@ -37,8 +35,6 @@ public class UserTest {
 	public void testUpdate() throws Exception {
 		try {
 			UserDAO dao = new UserDAO();
-			dao.setUsername("");
-			dao.setNickname("");
 			dao.setEmail("");
 			dao.setPassword("");
 			userRepo.insert(dao);
@@ -52,8 +48,6 @@ public class UserTest {
 	public void testSelect() throws Exception {
 		try {
 			UserDAO dao = new UserDAO();
-			dao.setUsername("");
-			dao.setNickname("");
 			dao.setEmail("");
 			dao.setPassword("");
 			userRepo.insert(dao);
@@ -67,8 +61,6 @@ public class UserTest {
 	public void testDelete() throws Exception {
 		try {
 			UserDAO dao = new UserDAO();
-			dao.setUsername("");
-			dao.setNickname("");
 			dao.setEmail("");
 			dao.setPassword("");
 			userRepo.insert(dao);

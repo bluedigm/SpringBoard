@@ -3,35 +3,36 @@ package com.bluedigm.springboard.entity;
 import java.util.Date;
 
 public class UserDAO {
-	String username;
-	String nickname;
-	String password;
+	int id;
+	String name;
+	String nick;
 	String email;
+	String password;
 	Date createAt;
 	Date updateAt;
 
-	public String getUsername() {
-		return username;
+	public int getId() {
+		return id;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getNickname() {
-		return nickname;
+	public String getName() {
+		return name;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getNick() {
+		return nick;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setNick(String nick) {
+		this.nick = nick;
 	}
 
 	public String getEmail() {
@@ -40,6 +41,14 @@ public class UserDAO {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public Date getCreateAt() {

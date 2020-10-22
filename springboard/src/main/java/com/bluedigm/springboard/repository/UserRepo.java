@@ -20,30 +20,49 @@ public class UserRepo {
 		return sql.insert(namespace + ".insert", dao) > 0;
 	}
 
-	public boolean update(String username, UserDAO dao) {
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("old", username);
-		param.put("new", dao.getUsername());
-		param.put("nickname", dao.getNickname());
-		param.put("password", dao.getPassword());
-		param.put("email", dao.getEmail());
-
-		return sql.update(namespace + ".update", param) > 0;
+	public boolean update(UserDAO dao) {
+		return sql.update(namespace + ".update", dao) > 0;
 	}
 
-	public UserDAO select(String username) {
-		return sql.selectOne(namespace + ".select", username);
+	public UserDAO select(int id) {
+		return sql.selectOne(namespace + ".select", id);
 	}
 
-	public List<UserDAO> search(String username, String nickname, String email) {
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("username", username);
-		param.put("nickname", nickname);
-		param.put("email", email);
-		return sql.selectList(namespace + ".search", param);
+	public UserDAO select(String name) {
+		return sql.selectOne(namespace + ".selectName", name);
 	}
 
-	public boolean delete(String username) {
-		return sql.delete(namespace + ".delete", username) > 0;
+	public List<UserDAO> search(UserDAO dao) {
+		return sql.selectList(namespace + ".search", dao);
+	}
+
+	public List<UserDAO> searchAll() {
+		return sql.selectList(namespace + ".searchAll");
+	}
+
+	public List<UserDAO> searchAll(int page, int size) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", page * size);
+		map.put("size", size);
+		return sql.selectList(namespace + ".searchLimitAll", map);
+	}
+
+	public List<UserDAO> searchAll(String opt, String value, int page, int size) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(opt, "%" + value + "%");
+		map.putIfAbsent("name", "%");
+		map.putIfAbsent("nick", "%");
+		map.putIfAbsent("email", "%");
+		map.put("start", page * size);
+		map.put("size", size);
+		return sql.selectList(namespace + ".searchLimitLikeAll", map);
+	}
+
+	public int count() {
+		return sql.selectOne(namespace + ".count");
+	}
+
+	public boolean delete(int id) {
+		return sql.delete(namespace + ".delete", id) > 0;
 	}
 }

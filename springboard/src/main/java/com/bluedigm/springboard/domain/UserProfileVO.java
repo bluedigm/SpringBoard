@@ -1,14 +1,10 @@
 package com.bluedigm.springboard.domain;
 
 import java.util.Date;
-import java.util.List;
-
-import com.bluedigm.springboard.entity.BoardDAO;
-import com.bluedigm.springboard.entity.ContentDAO;
 
 public class UserProfileVO {
-	String username;
-	String nickname;
+	String name;
+	String nick;
 	String email;
 	Date createAt;
 	Date updateAt;
@@ -19,24 +15,24 @@ public class UserProfileVO {
 //	List<BoardDAO> boardList;
 //	List<ContentDAO> contentList;
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
 	public String getEmail() {
 		return email;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getNick() {
+		return nick;
+	}
+
+	public void setNick(String nick) {
+		this.nick = nick;
 	}
 
 	public void setEmail(String email) {

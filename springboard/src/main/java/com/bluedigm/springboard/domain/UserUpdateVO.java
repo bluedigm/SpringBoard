@@ -1,51 +1,36 @@
 package com.bluedigm.springboard.domain;
 
 public class UserUpdateVO {
-	String username;
-	String nickname;
-	String passwordOld;
-	String passwordNew1;
-	String passwordNew2;
+	int id;
+	String name;
+	String nick;
 	String email;
+	String pwOld;
+	String pwNew1;
+	String pwNew2;
 
-	public String getUsername() {
-		return username;
+	public int getId() {
+		return id;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getNickname() {
-		return nickname;
+	public String getName() {
+		return name;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getPasswordOld() {
-		return passwordOld;
+	public String getNick() {
+		return nick;
 	}
 
-	public void setPasswordOld(String passwordOld) {
-		this.passwordOld = passwordOld;
-	}
-
-	public String getPasswordNew1() {
-		return passwordNew1;
-	}
-
-	public void setPasswordNew1(String passwordNew1) {
-		this.passwordNew1 = passwordNew1;
-	}
-
-	public String getPasswordNew2() {
-		return passwordNew2;
-	}
-
-	public void setPasswordNew2(String passwordNew2) {
-		this.passwordNew2 = passwordNew2;
+	public void setNick(String nick) {
+		this.nick = nick;
 	}
 
 	public String getEmail() {
@@ -54,5 +39,29 @@ public class UserUpdateVO {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPwOld() {
+		return pwOld;
+	}
+
+	public void setPwOld(String pwOld) {
+		this.pwOld = pwOld;
+	}
+
+	public String getPwNew1() {
+		return pwNew1;
+	}
+
+	public void setPwNew1(String pwNew1) {
+		this.pwNew1 = pwNew1;
+	}
+
+	public String getPwNew2() {
+		return pwNew2;
+	}
+
+	public void setPwNew2(String pwNew2) {
+		this.pwNew2 = pwNew2;
 	}
 }

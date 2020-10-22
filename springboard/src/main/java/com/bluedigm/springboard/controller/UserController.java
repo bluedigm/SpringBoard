@@ -1,10 +1,7 @@
 package com.bluedigm.springboard.controller;
 
-import java.text.DateFormat;
 import java.util.Date;
-import java.util.Locale;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -19,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bluedigm.springboard.domain.UserCreateVO;
 import com.bluedigm.springboard.domain.UserDeleteVO;
 import com.bluedigm.springboard.domain.UserLoginVO;
-import com.bluedigm.springboard.domain.UserProfileVO;
 import com.bluedigm.springboard.domain.UserSearchVO;
 import com.bluedigm.springboard.domain.UserUpdateVO;
 import com.bluedigm.springboard.service.UserService;
@@ -38,20 +34,28 @@ public class UserController {
 		return http.getSession(false);
 	}
 
-	void setLogin(HttpServletRequest http, String username) {
+	void setLogin(HttpServletRequest http, int id, Date at) {
 		if (checkSession(http)) {
-			getSession(http).setAttribute("springboard_username", username);
+			getSession(http).setAttribute("springboard_id", id);
+			getSession(http).setAttribute("springboard_date", at);
 		}
 	}
 
-	String getLogin(HttpServletRequest http) {
+	Integer getLoginId(HttpServletRequest http) {
 		if (checkSession(http)) {
-			return (String) getSession(http).getAttribute("springboard_username");
+			return (int) getSession(http).getAttribute("springboard_id");
 		}
 		return null;
 	}
 
-	@RequestMapping(value = "user/create", method = RequestMethod.GET)
+	Date getLoginDate(HttpServletRequest http) {
+		if (checkSession(http)) {
+			return (Date) getSession(http).getAttribute("springboard_date");
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "/user/create", method = RequestMethod.GET)
 	public ModelAndView getUserCreate() {
 		logger.info("User Controller - Get User Create");
 		ModelAndView mav = new ModelAndView();
@@ -76,15 +80,16 @@ public class UserController {
 	public ModelAndView getUserDelete(HttpServletRequest http) {
 		logger.info("User Controller - Get User Delete");
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("res", userService.delete(getLogin(http)));
+		mav.addObject("res", userService.delete(getLoginId(http)));
 		mav.setViewName("user/delete");
 		return mav;
 	}
 
 	@RequestMapping(value = "/user/delete", method = RequestMethod.POST)
-	public ModelAndView postUserDelete(UserDeleteVO vo) {
+	public ModelAndView postUserDelete(HttpServletRequest http, UserDeleteVO vo) {
 		logger.info("User Controller - Post User Delete");
 		ModelAndView mav = new ModelAndView();
+		vo.setId(getLoginId(http));
 		if (userService.delete(vo)) {
 			mav.setViewName("redirect:/user/login");
 		} else {
@@ -108,7 +113,7 @@ public class UserController {
 		ModelAndView mav = new ModelAndView();
 		if (userService.login(vo)) {
 			http.getSession(true);
-			setLogin(http, vo.getUsername());
+			setLogin(http, vo.getId(), vo.getDate());
 			mav.setViewName("redirect:/user/portal");
 		} else {
 			mav.addObject("res", vo);
@@ -138,7 +143,7 @@ public class UserController {
 	public ModelAndView getUserProfile(HttpServletRequest http) {
 		logger.info("User Controller - Get User Profile");
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("res", userService.profile(getLogin(http)));
+		mav.addObject("res", userService.profile(getLoginId(http)));
 		mav.setViewName("/user/profile");
 		return mav;
 	}
@@ -147,6 +152,7 @@ public class UserController {
 	public ModelAndView getUserSearch() {
 		logger.info("User Controller - Get User Search");
 		ModelAndView mav = new ModelAndView();
+		mav.addObject("res", userService.search());
 		mav.setViewName("/user/search");
 		return mav;
 	}
@@ -155,8 +161,8 @@ public class UserController {
 	public ModelAndView postUserSearch(UserSearchVO vo) {
 		logger.info("User Controller - Post User Search");
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("res", vo);
-		mav.setViewName("redirect:/user/search");
+		mav.addObject("res", userService.search(vo));
+		mav.setViewName("/user/search");
 		return mav;
 	}
 
@@ -164,7 +170,7 @@ public class UserController {
 	public ModelAndView getUserUpdate(HttpServletRequest http) {
 		logger.info("User Controller - Get User Update");
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("res", userService.update(getLogin(http)));
+		mav.addObject("res", userService.update(getLoginId(http)));
 		mav.setViewName("/user/update");
 		return mav;
 	}
@@ -173,8 +179,8 @@ public class UserController {
 	public ModelAndView postUserUpdate(HttpServletRequest http, UserUpdateVO vo) {
 		logger.info("User Controller - Post User Update");
 		ModelAndView mav = new ModelAndView();
-		if (userService.update(getLogin(http), vo)) {
-			setLogin(http, vo.getUsername());
+		vo.setId(getLoginId(http));
+		if (userService.update(vo)) {
 			mav.setViewName("redirect:/user/profile");
 		} else {
 			mav.addObject("res", vo);
