@@ -1,13 +1,10 @@
-package com.bluedigm.springboard.entity.join;
+package com.bluedigm.springboard.entity;
 
-import com.bluedigm.springboard.entity.BoardDAO;
-import com.bluedigm.springboard.entity.MemberDAO;
-import com.bluedigm.springboard.entity.UserDAO;
-
-public class MemberJoin {
+public class JoinDAO {
 	MemberDAO member;
 	UserDAO user;
 	BoardDAO board;
+	NoteDAO note;
 
 	public MemberDAO getMember() {
 		return member;
@@ -31,5 +28,13 @@ public class MemberJoin {
 
 	public void setBoard(BoardDAO board) {
 		this.board = board;
+	}
+
+	public NoteDAO getNote() {
+		return note;
+	}
+
+	public void setNote(NoteDAO note) {
+		this.note = note;
 	}
 }

@@ -12,37 +12,31 @@ PUBLIC "-//mybatis.org//dtd mapper 3.0//en"
 		<result property="createAt" column="time_create" />
 		<result property="updateAt" column="time_update" />
 	</resultMap>
-	<insert id="insert" keyProperty="id">
-		insert into
-		board(link,title,text)
-		values(#{link},#{title},#{text})
+	<insert id="insert">
+		insert into board (link, title, text) values
+		(#{link}, #{title}, #{text})
 	</insert>
 	<update id="update">
-		update board
-		set link=#{link}, title=#{title},
-		text=#{text}
+		update board set link = #{link}, title = #{title},
+		text = #{text} where id = #{id}
 	</update>
 	<delete id="delete">
-		delete from board
-		where id=#{id}
+		delete from board where id = #{id}
 	</delete>
-	<select id="select" resultMap="board">
-		select * from board
-		where
-		id=#{id}
+	<select id="selectId" resultMap="board">
+		select * from board where id =
+		#{id}
 	</select>
 	<select id="selectLink" resultMap="board">
-		select * from board
-		where
-		link=#{link}
+		select * from board where link
+		= #{link}
 	</select>
-	<select id="searchAll" resultMap="board">
+	<select id="search" resultMap="board">
 		select * from board
 	</select>
-	<select id="searchLimitAll" resultMap="board">
-		select * from board
-		LIMIT
-		#{start} , #{size}
+	<select id="searchLimit" resultMap="board">
+		select * from board LIMIT
+		#{start}, #{size}
 	</select>
 	<select id="count" resultType="int">
 		select count(*) from board

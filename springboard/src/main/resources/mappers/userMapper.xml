@@ -13,41 +13,33 @@ PUBLIC "-//mybatis.org//dtd mapper 3.0//en"
 		<result property="createAt" column="time_create" />
 		<result property="updateAt" column="time_update" />
 	</resultMap>
-	<insert id="insert" keyProperty="id">
-		insert into
-		user(name,nick,email,password)
-		values(#{name},#{nick},#{email},#{password})
+	<insert id="insert">
+		insert into user (name, nick, email, password) values
+		(#{name}, #{nick}, #{email}, #{password})
 	</insert>
 	<update id="update">
-		update user
-		set name=#{name}, nick=#{nick},
-		email=#{email}, password=#{password}
-		where id=#{id}
+		update user set name = #{name}, nick = #{nick}, email
+		= #{email}, password = #{password} where id = #{id}
 	</update>
 	<delete id="delete">
-		delete from user
-		where id=#{id}
+		delete from user where id = #{id}
 	</delete>
-	<select id="select" resultMap="user">
-		select * from user
-		where
-		id=#{id}
+	<select id="selectId" resultMap="user">
+		select * from user where id =
+		#{id}
 	</select>
 	<select id="selectName" resultMap="user">
-		select * from user
-		where
-		name=#{name}
+		select * from user where name
+		= #{name}
 	</select>
-	<select id="searchAll" resultMap="user">
+	<select id="search" resultMap="user">
 		select * from user
 	</select>
-	<select id="searchLimitAll" resultMap="user">
-		select * from user
-		LIMIT
-		#{start} , #{size}
+	<select id="searchLimit" resultMap="user">
+		select * from user LIMIT
+		#{start}, #{size}
 	</select>
 	<select id="count" resultType="int">
-		select count(*) from
-		user
+		select count(*) from user
 	</select>
 </mapper>

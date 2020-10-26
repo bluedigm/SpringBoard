@@ -1,30 +1,25 @@
 package com.bluedigm.springboard.service;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bluedigm.springboard.domain.BoardCreateVO;
 import com.bluedigm.springboard.domain.BoardHomeVO;
 import com.bluedigm.springboard.domain.BoardSearchVO;
 import com.bluedigm.springboard.domain.UserDeleteVO;
-import com.bluedigm.springboard.domain.UserLoginVO;
-import com.bluedigm.springboard.domain.UserProfileVO;
-import com.bluedigm.springboard.domain.UserSearchVO;
 import com.bluedigm.springboard.domain.UserUpdateVO;
 import com.bluedigm.springboard.entity.BoardDAO;
+import com.bluedigm.springboard.entity.JoinDAO;
 import com.bluedigm.springboard.entity.MemberDAO;
-import com.bluedigm.springboard.entity.NoteDAO;
 import com.bluedigm.springboard.entity.UserDAO;
-import com.bluedigm.springboard.entity.join.MemberJoin;
-import com.bluedigm.springboard.entity.join.NoteJoin;
 import com.bluedigm.springboard.repository.BoardRepo;
+import com.bluedigm.springboard.repository.JoinRepo;
 import com.bluedigm.springboard.repository.MemberRepo;
 import com.bluedigm.springboard.repository.NoteRepo;
 import com.bluedigm.springboard.repository.UserRepo;
@@ -40,28 +35,22 @@ public class BoardService {
 	MemberRepo memberRepo;
 	@Autowired
 	NoteRepo noteRepo;
+	@Autowired
+	JoinRepo joinRepo;
 
+	@Transactional
 	public boolean create(BoardCreateVO vo) {
+		logger.info("Create vo");
 		BoardDAO dao = new BoardDAO();
 		dao.setLink(vo.getLink());
 		dao.setTitle(vo.getTitle());
 		dao.setText(vo.getText());
-		if (boardRepo.insert(dao)) {
-			Optional<BoardDAO> dao2 = boardRepo.select(dao.getLink());
-			vo.setBoardId(dao2.get().getId());
-			MemberDAO dao3 = new MemberDAO();
-			dao3.setUserId(vo.getUserId());
-			dao3.setBoardId(vo.getBoardId());
-			if (memberRepo.insert(dao3)) {
-				dao3 = memberRepo.select(vo.getUserId(), vo.getBoardId());
-				dao3.setFlagOp(true);
-				return memberRepo.update(dao3);
-			}
-		}
-		return false;
+		return boardRepo.insert(dao);
 	}
 
+	@Transactional(readOnly = true)
 	public UserDeleteVO delete(int id) {
+		logger.info("Delete id");
 		Optional<UserDAO> dao = userRepo.select(id);
 		if (dao.isPresent()) {
 			UserDeleteVO vo = new UserDeleteVO();
@@ -73,7 +62,9 @@ public class BoardService {
 		return null;
 	}
 
+	@Transactional
 	public boolean delete(UserDeleteVO vo) {
+		logger.info("Delete vo");
 		if (vo.getPw1().equals(vo.getPw2())) {
 			Optional<UserDAO> dao = userRepo.select(vo.getId());
 			if (dao.isPresent())
@@ -83,47 +74,83 @@ public class BoardService {
 		return false;
 	}
 
-	public boolean login(UserLoginVO vo) {
-		Optional<UserDAO> dao = userRepo.select(vo.getName());
-		if (dao.isPresent())
-			if (dao.get().getPassword().equals(vo.getPw())) {
-				vo.setId(dao.get().getId());
-				vo.setDate(dao.get().getUpdateAt());
-				return true;
-			}
-		return false;
-	}
-
-	public BoardHomeVO home(String link) {
-		Optional<BoardDAO> board = boardRepo.select(link);
+	@Transactional(readOnly = true)
+	public BoardHomeVO home(Integer user, String link) {
+		logger.info("Home user link");
 		BoardHomeVO vo = new BoardHomeVO();
-		vo.setTitle(board.get().getTitle());
-		vo.setText(board.get().getText());
-		List<NoteJoin> data = noteRepo.searchDetailAll(board.get().getId(), 0, 10);
-		if (!data.isEmpty()) {
-			vo.setNoteList(data);
+		if (user != null) {
+			Optional<BoardDAO> dao = boardRepo.select(link);
+			if (dao.isPresent()) {
+				vo.setTitle(dao.get().getTitle());
+				vo.setText(dao.get().getText());
+				vo.setLink(dao.get().getLink());
+				Optional<MemberDAO> member = memberRepo.select(user, dao.get().getId());
+				if (member.isPresent()) {
+					vo.setMember(true);
+				}
+				List<JoinDAO> data = joinRepo.searchNote(dao.get(), 0, 10);
+				if (!data.isEmpty()) {
+					vo.setList(data);
+				}
+			}
 		}
 		return vo;
 	}
 
+	@Transactional
+	public boolean join(Integer user, String link, boolean flag) {
+		logger.info("Join user link");
+		if (user != null && link != null) {
+			Optional<UserDAO> u = userRepo.select(user);
+			Optional<BoardDAO> b = boardRepo.select(link);
+			if (u.isPresent() && b.isPresent()) {
+				MemberDAO dao = new MemberDAO();
+				dao.setUserId(u.get().getId());
+				dao.setBoardId(b.get().getId());
+				dao.setFlagOp(flag);
+				return memberRepo.insert(dao);
+			}
+		}
+		return false;
+	}
+
+	@Transactional
+	public boolean leave(Integer user, String link) {
+		logger.info("Leave user link");
+		logger.info("Join user link");
+		if (user != null && link != null) {
+			Optional<UserDAO> u = userRepo.select(user);
+			Optional<BoardDAO> b = boardRepo.select(link);
+			if (u.isPresent() && b.isPresent()) {
+				return memberRepo.delete(u.get().getId(), b.get().getId());
+			}
+		}
+		return false;
+	}
+
+	@Transactional(readOnly = true)
 	public BoardSearchVO search() {
+		logger.info("Search vo");
 		BoardSearchVO vo = new BoardSearchVO();
 		vo.setPage(1);
 		vo.setSize(10);
-		vo.setBoardList(boardRepo.searchAll(0, 10));
+		vo.setList(boardRepo.search(0, 10));
 		Optional<Integer> count = boardRepo.count();
 		vo.setPageMax(count.get() % 10 > 0 ? count.get() / 10 + 1 : count.get() / 10);
 		return vo;
 	}
 
+	@Transactional(readOnly = true)
 	public BoardSearchVO search(BoardSearchVO vo) {
-		vo.setBoardList(boardRepo.searchAll(vo.getPage() - 1, vo.getSize()));
+		logger.info("Search vo");
+		vo.setList(boardRepo.search(vo.getPage() - 1, vo.getSize()));
 		Optional<Integer> count = boardRepo.count();
 		vo.setPageMax(count.get() % vo.getSize() > 0 ? count.get() / vo.getSize() + 1 : count.get() / vo.getSize());
 		return vo;
 	}
 
 	public UserUpdateVO update(int id) {
+		logger.info("Update id");
 		Optional<UserDAO> dao = userRepo.select(id);
 		if (dao.isPresent()) {
 			UserUpdateVO vo = new UserUpdateVO();
@@ -136,6 +163,7 @@ public class BoardService {
 	}
 
 	public boolean update(UserUpdateVO vo) {
+		logger.info("Update vo");
 		if (vo.getPwNew1().equals(vo.getPwNew2())) {
 			Optional<UserDAO> dao = userRepo.select(vo.getId());
 			if (dao.isPresent())
@@ -150,18 +178,22 @@ public class BoardService {
 		return false;
 	}
 
+	@Transactional(readOnly = true)
 	public Integer check(String link) {
-		Optional<BoardDAO> board = boardRepo.select(link);
-		if (board.isPresent()) {
-			return board.get().getId();
+		logger.info("Check link");
+		Optional<BoardDAO> dao = boardRepo.select(link);
+		if (dao.isPresent()) {
+			return dao.get().getId();
 		}
 		return null;
 	}
 
+	@Transactional(readOnly = true)
 	public String check(int id) {
-		Optional<BoardDAO> board = boardRepo.select(id);
-		if (board.isPresent()) {
-			return board.get().getLink();
+		logger.info("Check id");
+		Optional<BoardDAO> dao = boardRepo.select(id);
+		if (dao.isPresent()) {
+			return dao.get().getLink();
 		}
 		return null;
 	}

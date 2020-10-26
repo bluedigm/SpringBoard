@@ -1,29 +1,12 @@
 package com.bluedigm.springboard.service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bluedigm.springboard.domain.BoardCreateVO;
-import com.bluedigm.springboard.domain.BoardHomeVO;
-import com.bluedigm.springboard.domain.BoardSearchVO;
 import com.bluedigm.springboard.domain.NoteCreateVO;
-import com.bluedigm.springboard.domain.UserDeleteVO;
-import com.bluedigm.springboard.domain.UserLoginVO;
-import com.bluedigm.springboard.domain.UserProfileVO;
-import com.bluedigm.springboard.domain.UserSearchVO;
-import com.bluedigm.springboard.domain.UserUpdateVO;
-import com.bluedigm.springboard.entity.BoardDAO;
-import com.bluedigm.springboard.entity.MemberDAO;
 import com.bluedigm.springboard.entity.NoteDAO;
-import com.bluedigm.springboard.entity.UserDAO;
-import com.bluedigm.springboard.entity.join.MemberJoin;
 import com.bluedigm.springboard.repository.BoardRepo;
 import com.bluedigm.springboard.repository.MemberRepo;
 import com.bluedigm.springboard.repository.NoteRepo;
@@ -42,6 +25,7 @@ public class NoteService {
 	NoteRepo noteRepo;
 
 	public boolean create(NoteCreateVO vo) {
+		logger.info("Note Service - Create vo");
 		NoteDAO dao = new NoteDAO();
 		dao.setUserId(vo.getUserId());
 		dao.setBoardId(vo.getBoardId());

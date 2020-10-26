@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.bluedigm.springboard.entity.UserDAO;
 
@@ -19,7 +18,6 @@ public class UserRepo {
 	SqlSession sql;
 	static String namespace = "mappers.user";
 
-	@Transactional
 	public boolean insert(UserDAO dao) {
 		try {
 			return sql.insert(namespace + ".insert", dao) > 0;
@@ -29,7 +27,6 @@ public class UserRepo {
 		}
 	}
 
-	@Transactional
 	public boolean update(UserDAO dao) {
 		try {
 			return sql.update(namespace + ".update", dao) > 0;
@@ -39,7 +36,6 @@ public class UserRepo {
 		}
 	}
 
-	@Transactional
 	public boolean delete(int id) {
 		try {
 			return sql.delete(namespace + ".delete", id) > 0;
@@ -49,54 +45,49 @@ public class UserRepo {
 		}
 	}
 
-	@Transactional(readOnly = true)
 	public Optional<UserDAO> select(int id) {
 		try {
-			return Optional.ofNullable(sql.selectOne(namespace + ".select", id));
+			return Optional.of(sql.selectOne(namespace + ".selectId", id));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Optional.empty();
 		}
 	}
 
-	@Transactional(readOnly = true)
 	public Optional<UserDAO> select(String name) {
 		try {
-			return Optional.ofNullable(sql.selectOne(namespace + ".selectName", name));
+			return Optional.of(sql.selectOne(namespace + ".selectName", name));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Optional.empty();
 		}
 	}
 
-	@Transactional(readOnly = true)
-	public List<UserDAO> searchAll() {
+	public List<UserDAO> search() {
 		try {
-			return sql.selectList(namespace + ".searchAll");
+			return sql.selectList(namespace + ".search");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new LinkedList<UserDAO>();
 		}
 	}
 
-	@Transactional(readOnly = true)
-	public List<UserDAO> searchAll(int page, int size) {
+	public List<UserDAO> search(int page, int size) {
 
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("start", page * size);
 			map.put("size", size);
-			return sql.selectList(namespace + ".searchLimitAll", map);
+			return sql.selectList(namespace + ".searchLimit", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new LinkedList<UserDAO>();
 		}
 	}
 
-	@Transactional(readOnly = true)
 	public Optional<Integer> count() {
 		try {
-			return Optional.ofNullable(sql.selectOne(namespace + ".count"));
+			return Optional.of(sql.selectOne(namespace + ".count"));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Optional.empty();

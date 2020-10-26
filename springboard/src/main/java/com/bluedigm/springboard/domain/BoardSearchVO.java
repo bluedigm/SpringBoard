@@ -9,17 +9,17 @@ import com.bluedigm.springboard.entity.BoardDAO;
  *
  */
 public class BoardSearchVO {
-	List<BoardDAO> boardList;
+	List<BoardDAO> list;
 	int page;
 	int pageMax;
 	int size;
 
-	public List<BoardDAO> getBoardList() {
-		return boardList;
+	public List<BoardDAO> getList() {
+		return list;
 	}
 
-	public void setBoardList(List<BoardDAO> boardList) {
-		this.boardList = boardList;
+	public void setList(List<BoardDAO> list) {
+		this.list = list;
 	}
 
 	public int getPage() {

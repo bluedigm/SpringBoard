@@ -2,28 +2,40 @@ package com.bluedigm.springboard.domain;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
-import com.bluedigm.springboard.entity.BoardDAO;
-import com.bluedigm.springboard.entity.MemberDAO;
-import com.bluedigm.springboard.entity.NoteDAO;
-import com.bluedigm.springboard.entity.UserDAO;
-import com.bluedigm.springboard.entity.join.MemberJoin;
-import com.bluedigm.springboard.entity.join.NoteJoin;
+import com.bluedigm.springboard.entity.JoinDAO;
 
 public class BoardHomeVO {
-	List<NoteJoin> noteList;
+	List<JoinDAO> list;
+	boolean member;
+	String link;
 	String title;
 	String text;
 	Date createAt;
 	Date updateAt;
 
-	public List<NoteJoin> getNoteList() {
-		return noteList;
+	public List<JoinDAO> getList() {
+		return list;
 	}
 
-	public void setNoteList(List<NoteJoin> noteList) {
-		this.noteList = noteList;
+	public void setList(List<JoinDAO> list) {
+		this.list = list;
+	}
+
+	public boolean isMember() {
+		return member;
+	}
+
+	public void setMember(boolean member) {
+		this.member = member;
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
 	}
 
 	public String getTitle() {

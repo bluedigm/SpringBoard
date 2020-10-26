@@ -13,53 +13,30 @@ PUBLIC "-//mybatis.org//dtd mapper 3.0//en"
 		<result property="createAt" column="time_create" />
 		<result property="updateAt" column="time_update" />
 	</resultMap>
-	<resultMap type="com.bluedigm.springboard.entity.BoardDAO"
-		id="board">
-		<result property="link" column="link" />
-	</resultMap>
-	<resultMap type="com.bluedigm.springboard.entity.UserDAO"
-		id="user">
-		<result property="name" column="name" />
-	</resultMap>
-	<resultMap
-		type="com.bluedigm.springboard.entity.join.NoteJoin" id="noteJoin">
-		<collection property="user" resultMap="user"></collection>
-		<collection property="board" resultMap="board"></collection>
-		<collection property="note" resultMap="note"></collection>
-	</resultMap>
 	<insert id="insert">
-		insert into
-		note(id_user,id_board,title,text)
-		values(#{userId},#{boardId},#{title},#{text})
+		insert into note (id_user, id_board, title, text)
+		values (#{userId}, #{boardId}, #{title}, #{text})
 	</insert>
-	<delete id="delete">
-		delete from note
-		where id=#{id}
-	</delete>
-	<select id="select" resultMap="note">
-		select * from note
-		where
-		id_board=#{boardId}
-	</select>
-	<select id="searchLimitBoardDetailAll" resultMap="noteJoin">
-		select n.*, u.name, b.link from note as n, user as u, board as b
-		where
-		n.id_board=#{boardId} and n.id_board=b.id and n.id_user=u.id
-		LIMIT
-		#{start} , #{size}
-	</select>
-	<select id="searchLimitBoardAll" resultMap="note">
-		select * from note
-		where
-		id_board=#{boardId}
-		LIMIT
-		#{start} , #{size}
-	</select>
 	<update id="update">
-		update note
-		set id_user=#{userId},
-		id_board=#{boardId},
-		title=#{title}, text=#{text}
-		where id=#{id}
+		update note set id_user = #{userId}, id_board =
+		#{boardId}, title = #{title}, text = #{text} where id = #{id}
 	</update>
+	<delete id="delete">
+		delete from note where id = #{id}
+	</delete>
+	<select id="selectId" resultMap="note">
+		select * from note where id =
+		#{id}
+	</select>
+	<select id="searchBoard" resultMap="note">
+		select * from note where
+		id_board = #{boardId}
+	</select>
+	<select id="searchBoardLimit" resultMap="note">
+		select * from note where
+		id_board = #{boardId} LIMIT #{start}, #{size}
+	</select>
+	<select id="count" resultType="int">
+		select count(*) from note
+	</select>
 </mapper>

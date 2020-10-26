@@ -41,7 +41,7 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		vo.setUserId(common.getUser(http));
 		if (boardService.create(vo)) {
-			mav.setViewName("redirect:/board/home");
+			mav.setViewName("redirect:/board/" + vo.getLink() + "/owner");
 		} else {
 			mav.addObject("res", vo);
 			mav.setViewName("board/create");
@@ -113,12 +113,42 @@ public class BoardController {
 //		return mav;
 //	}
 
+	@RequestMapping(value = "/board/{link}/owner", method = RequestMethod.GET)
+	public ModelAndView getOwner(HttpServletRequest http, @PathVariable("link") String link) {
+		logger.info("Get Join");
+		ModelAndView mav = new ModelAndView();
+		common.setBoard(http, boardService.check(link));
+		mav.addObject("res", boardService.join(common.getUser(http), link, true));
+		mav.setViewName("redirect:/board/" + link);
+		return mav;
+	}
+
+	@RequestMapping(value = "/board/{link}/join", method = RequestMethod.GET)
+	public ModelAndView getJoin(HttpServletRequest http, @PathVariable("link") String link) {
+		logger.info("Get Join");
+		ModelAndView mav = new ModelAndView();
+		common.setBoard(http, boardService.check(link));
+		mav.addObject("res", boardService.join(common.getUser(http), link, false));
+		mav.setViewName("redirect:/board/" + link);
+		return mav;
+	}
+
+	@RequestMapping(value = "/board/{link}/leave", method = RequestMethod.GET)
+	public ModelAndView getLeave(HttpServletRequest http, @PathVariable("link") String link) {
+		logger.info("Get Leave");
+		ModelAndView mav = new ModelAndView();
+		common.setBoard(http, boardService.check(link));
+		mav.addObject("res", boardService.leave(common.getUser(http), link));
+		mav.setViewName("redirect:/board/" + link);
+		return mav;
+	}
+
 	@RequestMapping(value = "/board/{link}", method = RequestMethod.GET)
 	public ModelAndView getBoardHome(HttpServletRequest http, @PathVariable("link") String link) {
 		logger.info("Board Controller - Get Board Home");
 		ModelAndView mav = new ModelAndView();
 		common.setBoard(http, boardService.check(link));
-		mav.addObject("res", boardService.home(link));
+		mav.addObject("res", boardService.home(common.getUser(http), link));
 		mav.setViewName("/board/home");
 		return mav;
 	}

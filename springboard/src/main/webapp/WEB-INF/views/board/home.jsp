@@ -17,18 +17,34 @@
 	<p>
 		<a href="/board/search">Go to Search Board</a>
 	</p>
-	<form action="/note/create" method="get">
-		<div>
-			<button type="submit">New Post</button>
-		</div>
-	</form>
+	<c:choose>
+		<c:when test="${res.member==true}">
+			<form action="/note/create" method="get">
+				<div>
+					<button type="submit">New Post</button>
+				</div>
+			</form>
+			<form action="/board/${res.link}/leave" method="get">
+				<div>
+					<button type="submit">Leave Board</button>
+				</div>
+			</form>
+		</c:when>
+		<c:otherwise>
+			<form action="/board/${res.link}/join" method="get">
+				<div>
+					<button type="submit">Join Board</button>
+				</div>
+			</form>
+		</c:otherwise>
+	</c:choose>
 	<table>
 		<tr>
 			<th>Note Title</th>
 			<th>Author</th>
 			<th>Update At</th>
 		</tr>
-		<c:forEach var="list" items="${res.noteList}">
+		<c:forEach var="list" items="${res.list}">
 			<tr>
 				<td><a href="/note/${list.note.id}">${list.note.title}</a></td>
 				<td>${list.user.name}</td>

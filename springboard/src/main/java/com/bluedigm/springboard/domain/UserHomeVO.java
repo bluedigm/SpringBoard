@@ -2,21 +2,20 @@ package com.bluedigm.springboard.domain;
 
 import java.util.List;
 
-import com.bluedigm.springboard.entity.BoardDAO;
-import com.bluedigm.springboard.entity.join.MemberJoin;
+import com.bluedigm.springboard.entity.JoinDAO;
 
 public class UserHomeVO {
-	List<MemberJoin> joinList;
+	List<JoinDAO> joinList;
 	int page;
 	int pageMax;
 	int size;
 	String nick;
 
-	public List<MemberJoin> getJoinList() {
+	public List<JoinDAO> getJoinList() {
 		return joinList;
 	}
 
-	public void setJoinList(List<MemberJoin> joinList) {
+	public void setJoinList(List<JoinDAO> joinList) {
 		this.joinList = joinList;
 	}
 

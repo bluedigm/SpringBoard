@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bluedigm.springboard.domain.UserCreateVO;
 import com.bluedigm.springboard.domain.UserDeleteVO;
 import com.bluedigm.springboard.domain.UserLoginVO;
+import com.bluedigm.springboard.domain.UserResetVO;
 import com.bluedigm.springboard.domain.UserSearchVO;
 import com.bluedigm.springboard.domain.UserUpdateVO;
 import com.bluedigm.springboard.service.UserService;
@@ -26,16 +27,16 @@ public class UserController {
 	Common common;
 
 	@RequestMapping(value = "/user/create", method = RequestMethod.GET)
-	public ModelAndView getUserCreate() {
-		logger.info("User Controller - Get User Create");
+	public ModelAndView getCreate() {
+		logger.info("Get Create");
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/user/create");
 		return mav;
 	}
 
 	@RequestMapping(value = "/user/create", method = RequestMethod.POST)
-	public ModelAndView postUserCreate(UserCreateVO vo) {
-		logger.info("User Controller - Post User Create");
+	public ModelAndView postCreate(UserCreateVO vo) {
+		logger.info("Post Create");
 		ModelAndView mav = new ModelAndView();
 		if (userService.create(vo)) {
 			mav.setViewName("redirect:/user/login");
@@ -47,8 +48,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user/delete", method = RequestMethod.GET)
-	public ModelAndView getUserDelete(HttpServletRequest http) {
-		logger.info("User Controller - Get User Delete");
+	public ModelAndView getDelete(HttpServletRequest http) {
+		logger.info("Get Delete");
 		ModelAndView mav = new ModelAndView();
 		if (!common.checkLogin(http)) {
 			mav.setViewName("redirect:/home");
@@ -60,8 +61,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user/delete", method = RequestMethod.POST)
-	public ModelAndView postUserDelete(HttpServletRequest http, UserDeleteVO vo) {
-		logger.info("User Controller - Post User Delete");
+	public ModelAndView postDelete(HttpServletRequest http, UserDeleteVO vo) {
+		logger.info("Post Delete");
 		ModelAndView mav = new ModelAndView();
 		if (!common.checkLogin(http)) {
 			mav.setViewName("redirect:/home");
@@ -77,30 +78,30 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user/edit", method = RequestMethod.GET)
-	public ModelAndView getUserUpdate(HttpServletRequest http) {
-		logger.info("User Controller - Get User Edit");
+	public ModelAndView getEdit(HttpServletRequest http) {
+		logger.info("Get Edit");
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("res", userService.edit(common.getUser(http)));
-		mav.setViewName("/user/update");
+		mav.setViewName("/user/edit");
 		return mav;
 	}
 
 	@RequestMapping(value = "/user/edit", method = RequestMethod.POST)
-	public ModelAndView postUserUpdate(HttpServletRequest http, UserUpdateVO vo) {
-		logger.info("User Controller - Post User Edit");
+	public ModelAndView postEdit(HttpServletRequest http, UserUpdateVO vo) {
+		logger.info("Post Edit");
 		ModelAndView mav = new ModelAndView();
 		if (userService.edit(common.getUser(http), vo)) {
 			mav.setViewName("redirect:/user/profile");
 			return mav;
 		}
 		mav.addObject("res", vo);
-		mav.setViewName("/user/update");
+		mav.setViewName("/user/edit");
 		return mav;
 	}
 
 	@RequestMapping(value = "/user/home", method = RequestMethod.GET)
-	public ModelAndView getUserHome(HttpServletRequest http) {
-		logger.info("User Controller - Get User Home");
+	public ModelAndView getHome(HttpServletRequest http) {
+		logger.info("Get Home");
 		ModelAndView mav = new ModelAndView();
 		if (!common.checkLogin(http)) {
 			mav.setViewName("redirect:/home");
@@ -112,16 +113,16 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user/login", method = RequestMethod.GET)
-	public ModelAndView getUserLogin() {
-		logger.info("User Controller - Get User Login");
+	public ModelAndView getLogin() {
+		logger.info("Get Login");
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/user/login");
 		return mav;
 	}
 
 	@RequestMapping(value = "/user/login", method = RequestMethod.POST)
-	public ModelAndView postUserLogin(HttpServletRequest http, UserLoginVO vo) {
-		logger.info("User Controller - Post User Login");
+	public ModelAndView postLogin(HttpServletRequest http, UserLoginVO vo) {
+		logger.info("Post User Login");
 		ModelAndView mav = new ModelAndView();
 		if (userService.login(vo)) {
 			http.getSession(true);
@@ -135,8 +136,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user/logout", method = RequestMethod.GET)
-	public ModelAndView getUserLogout(HttpServletRequest http) {
-		logger.info("User Controller - Get User Logout");
+	public ModelAndView getLogout(HttpServletRequest http) {
+		logger.info("Get Logout");
 		ModelAndView mav = new ModelAndView();
 		http.getSession(true);
 		mav.setViewName("redirect:/user/login");
@@ -144,17 +145,38 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user/profile", method = RequestMethod.GET)
-	public ModelAndView getUserProfile(HttpServletRequest http) {
-		logger.info("User Controller - Get User Profile");
+	public ModelAndView getProfile(HttpServletRequest http) {
+		logger.info("Get Profile");
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("res", userService.profile(common.getUser(http)));
 		mav.setViewName("/user/profile");
 		return mav;
 	}
 
+	@RequestMapping(value = "/user/reset", method = RequestMethod.GET)
+	public ModelAndView getReset() {
+		logger.info("Get Reset");
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/user/reset");
+		return mav;
+	}
+
+	@RequestMapping(value = "/user/reset", method = RequestMethod.POST)
+	public ModelAndView postReset(UserResetVO vo) {
+		logger.info("Post Reset");
+		ModelAndView mav = new ModelAndView();
+		if (userService.reset(vo)) {
+			mav.setViewName("redirect:/user/login");
+			return mav;
+		}
+		mav.addObject("res", vo);
+		mav.setViewName("/user/reset");
+		return mav;
+	}
+
 	@RequestMapping(value = "/user/search", method = RequestMethod.GET)
-	public ModelAndView getUserSearch() {
-		logger.info("User Controller - Get User Search");
+	public ModelAndView getSearch() {
+		logger.info("Get Search");
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("res", userService.search());
 		mav.setViewName("/user/search");
@@ -162,8 +184,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user/search", method = RequestMethod.POST)
-	public ModelAndView postUserSearch(UserSearchVO vo) {
-		logger.info("User Controller - Post User Search");
+	public ModelAndView postSearch(UserSearchVO vo) {
+		logger.info("Post Search");
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("res", userService.search(vo));
 		mav.setViewName("/user/search");

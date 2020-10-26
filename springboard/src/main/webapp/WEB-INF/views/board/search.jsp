@@ -28,7 +28,7 @@
 			<th>Create At</th>
 			<th>Update At</th>
 		</tr>
-		<c:forEach var="board" items="${res.boardList}">
+		<c:forEach var="board" items="${res.list}">
 			<tr>
 				<td><a href="/board/${board.link}">${board.title}</a></td>
 				<td>${board.text}</td>
