@@ -1,81 +1,54 @@
-//package com.bluedigm.springboard.controller;
+package com.bluedigm.springboard.controller;
+
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.bluedigm.springboard.domain.BoardCreateVO;
+import com.bluedigm.springboard.domain.BoardSearchVO;
+import com.bluedigm.springboard.service.BoardService;
+
 //
-//import java.util.Date;
-//
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpSession;
-//
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.servlet.ModelAndView;
-//
-//import com.bluedigm.springboard.domain.UserCreateVO;
-//import com.bluedigm.springboard.domain.UserDeleteVO;
-//import com.bluedigm.springboard.domain.UserLoginVO;
-//import com.bluedigm.springboard.domain.UserSearchVO;
-//import com.bluedigm.springboard.domain.UserUpdateVO;
-//import com.bluedigm.springboard.service.UserService;
-//
-//@Controller
-//public class BoardController {
-//	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
-//	@Autowired
-//	UserService userService;
-//
-//	boolean checkSession(HttpServletRequest http) {
-//		return getSession(http) != null;
-//	}
-//
-//	HttpSession getSession(HttpServletRequest http) {
-//		return http.getSession(false);
-//	}
-//
-//	void setLogin(HttpServletRequest http, int id, Date at) {
-//		if (checkSession(http)) {
-//			getSession(http).setAttribute("springboard_id", id);
-//			getSession(http).setAttribute("springboard_date", at);
-//		}
-//	}
-//
-//	Integer getLoginId(HttpServletRequest http) {
-//		if (checkSession(http)) {
-//			return (int) getSession(http).getAttribute("springboard_id");
-//		}
-//		return null;
-//	}
-//
-//	Date getLoginDate(HttpServletRequest http) {
-//		if (checkSession(http)) {
-//			return (Date) getSession(http).getAttribute("springboard_date");
-//		}
-//		return null;
-//	}
-//
-//	@RequestMapping(value = "/user/create", method = RequestMethod.GET)
-//	public ModelAndView getUserCreate() {
-//		logger.info("User Controller - Get User Create");
-//		ModelAndView mav = new ModelAndView();
-//		mav.setViewName("user/create");
-//		return mav;
-//	}
-//
-//	@RequestMapping(value = "/user/create", method = RequestMethod.POST)
-//	public ModelAndView postUserCreate(UserCreateVO vo) {
-//		logger.info("User Controller - Post User Create");
-//		ModelAndView mav = new ModelAndView();
-//		if (userService.create(vo)) {
-//			mav.setViewName("redirect:/user/login");
-//		} else {
-//			mav.addObject("res", vo);
-//			mav.setViewName("user/create");
-//		}
-//		return mav;
-//	}
-//
+@Controller
+public class BoardController {
+	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	@Autowired
+	BoardService boardService;
+	@Autowired
+	Common common;
+
+	@RequestMapping(value = "/board/create", method = RequestMethod.GET)
+	public ModelAndView getBoardCreate() {
+		logger.info("Board Controller - Get Board Create");
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("board/create");
+		return mav;
+	}
+
+	@RequestMapping(value = "/board/create", method = RequestMethod.POST)
+	public ModelAndView postBoardCreate(HttpServletRequest http, BoardCreateVO vo) {
+		logger.info("Board Controller - Post Board Create");
+		ModelAndView mav = new ModelAndView();
+		vo.setUserId(common.getUser(http));
+		if (boardService.create(vo)) {
+			mav.setViewName("redirect:/board/home");
+		} else {
+			mav.addObject("res", vo);
+			mav.setViewName("board/create");
+		}
+		return mav;
+	}
+
 //	@RequestMapping(value = "/user/delete", method = RequestMethod.GET)
 //	public ModelAndView getUserDelete(HttpServletRequest http) {
 //		logger.info("User Controller - Get User Delete");
@@ -130,15 +103,25 @@
 //		mav.setViewName("redirect:/user/login");
 //		return mav;
 //	}
-//
-//	@RequestMapping(value = "/user/portal", method = RequestMethod.GET)
-//	public ModelAndView getUserPortal() {
-//		logger.info("User Controller - Get User Portal");
+
+//	@RequestMapping(value = "/board/home", method = RequestMethod.GET)
+//	public ModelAndView getBoardHome(HttpServletRequest http) {
+//		logger.info("Board Controller - Get Board Home");
 //		ModelAndView mav = new ModelAndView();
-//		mav.setViewName("/user/portal");
+//		mav.addObject("res", boardService.home(common.getLoginId(http)));
+//		mav.setViewName("/board/home");
 //		return mav;
 //	}
-//
+
+	@RequestMapping(value = "/board/{link}", method = RequestMethod.GET)
+	public ModelAndView getBoardHome(HttpServletRequest http, @PathVariable("link") String link) {
+		logger.info("Board Controller - Get Board Home");
+		ModelAndView mav = new ModelAndView();
+		common.setBoard(http, boardService.check(link));
+		mav.addObject("res", boardService.home(link));
+		mav.setViewName("/board/home");
+		return mav;
+	}
 //	@RequestMapping(value = "/user/profile", method = RequestMethod.GET)
 //	public ModelAndView getUserProfile(HttpServletRequest http) {
 //		logger.info("User Controller - Get User Profile");
@@ -147,24 +130,24 @@
 //		mav.setViewName("/user/profile");
 //		return mav;
 //	}
-//
-//	@RequestMapping(value = "/user/search", method = RequestMethod.GET)
-//	public ModelAndView getUserSearch() {
-//		logger.info("User Controller - Get User Search");
-//		ModelAndView mav = new ModelAndView();
-//		mav.addObject("res", userService.search());
-//		mav.setViewName("/user/search");
-//		return mav;
-//	}
-//
-//	@RequestMapping(value = "/user/search", method = RequestMethod.POST)
-//	public ModelAndView postUserSearch(UserSearchVO vo) {
-//		logger.info("User Controller - Post User Search");
-//		ModelAndView mav = new ModelAndView();
-//		mav.addObject("res", userService.search(vo));
-//		mav.setViewName("/user/search");
-//		return mav;
-//	}
+
+	@RequestMapping(value = "/board/search", method = RequestMethod.GET)
+	public ModelAndView getBoardSearch() {
+		logger.info("Board Controller - Get Board Search");
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("res", boardService.search());
+		mav.setViewName("/board/search");
+		return mav;
+	}
+
+	@RequestMapping(value = "/board/search", method = RequestMethod.POST)
+	public ModelAndView postBoardSearch(BoardSearchVO vo) {
+		logger.info("Board Controller - Post Board Search");
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("res", boardService.search(vo));
+		mav.setViewName("/board/search");
+		return mav;
+	}
 //
 //	@RequestMapping(value = "/user/update", method = RequestMethod.GET)
 //	public ModelAndView getUserUpdate(HttpServletRequest http) {
@@ -188,4 +171,4 @@
 //		}
 //		return mav;
 //	}
-//}
+}

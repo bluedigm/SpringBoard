@@ -1,9 +1,6 @@
 package com.bluedigm.springboard.controller;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,41 +22,14 @@ public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	UserService userService;
-
-	boolean checkSession(HttpServletRequest http) {
-		return getSession(http) != null;
-	}
-
-	HttpSession getSession(HttpServletRequest http) {
-		return http.getSession(false);
-	}
-
-	void setLogin(HttpServletRequest http, int id, Date at) {
-		if (checkSession(http)) {
-			getSession(http).setAttribute("springboard_id", id);
-			getSession(http).setAttribute("springboard_date", at);
-		}
-	}
-
-	Integer getLoginId(HttpServletRequest http) {
-		if (checkSession(http)) {
-			return (int) getSession(http).getAttribute("springboard_id");
-		}
-		return null;
-	}
-
-	Date getLoginDate(HttpServletRequest http) {
-		if (checkSession(http)) {
-			return (Date) getSession(http).getAttribute("springboard_date");
-		}
-		return null;
-	}
+	@Autowired
+	Common common;
 
 	@RequestMapping(value = "/user/create", method = RequestMethod.GET)
 	public ModelAndView getUserCreate() {
 		logger.info("User Controller - Get User Create");
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("user/create");
+		mav.setViewName("/user/create");
 		return mav;
 	}
 
@@ -69,10 +39,10 @@ public class UserController {
 		ModelAndView mav = new ModelAndView();
 		if (userService.create(vo)) {
 			mav.setViewName("redirect:/user/login");
-		} else {
-			mav.addObject("res", vo);
-			mav.setViewName("user/create");
+			return mav;
 		}
+		mav.addObject("res", vo);
+		mav.setViewName("/user/create");
 		return mav;
 	}
 
@@ -80,8 +50,12 @@ public class UserController {
 	public ModelAndView getUserDelete(HttpServletRequest http) {
 		logger.info("User Controller - Get User Delete");
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("res", userService.delete(getLoginId(http)));
-		mav.setViewName("user/delete");
+		if (!common.checkLogin(http)) {
+			mav.setViewName("redirect:/home");
+			return mav;
+		}
+		mav.addObject("res", userService.delete(common.getUser(http)));
+		mav.setViewName("/user/delete");
 		return mav;
 	}
 
@@ -89,13 +63,51 @@ public class UserController {
 	public ModelAndView postUserDelete(HttpServletRequest http, UserDeleteVO vo) {
 		logger.info("User Controller - Post User Delete");
 		ModelAndView mav = new ModelAndView();
-		vo.setId(getLoginId(http));
-		if (userService.delete(vo)) {
-			mav.setViewName("redirect:/user/login");
-		} else {
-			mav.addObject("res", vo);
-			mav.setViewName("user/delete");
+		if (!common.checkLogin(http)) {
+			mav.setViewName("redirect:/home");
+			return mav;
 		}
+		if (userService.delete(common.getUser(http), vo)) {
+			mav.setViewName("redirect:/user/login");
+			return mav;
+		}
+		mav.addObject("res", vo);
+		mav.setViewName("/user/delete");
+		return mav;
+	}
+
+	@RequestMapping(value = "/user/edit", method = RequestMethod.GET)
+	public ModelAndView getUserUpdate(HttpServletRequest http) {
+		logger.info("User Controller - Get User Edit");
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("res", userService.edit(common.getUser(http)));
+		mav.setViewName("/user/update");
+		return mav;
+	}
+
+	@RequestMapping(value = "/user/edit", method = RequestMethod.POST)
+	public ModelAndView postUserUpdate(HttpServletRequest http, UserUpdateVO vo) {
+		logger.info("User Controller - Post User Edit");
+		ModelAndView mav = new ModelAndView();
+		if (userService.edit(common.getUser(http), vo)) {
+			mav.setViewName("redirect:/user/profile");
+			return mav;
+		}
+		mav.addObject("res", vo);
+		mav.setViewName("/user/update");
+		return mav;
+	}
+
+	@RequestMapping(value = "/user/home", method = RequestMethod.GET)
+	public ModelAndView getUserHome(HttpServletRequest http) {
+		logger.info("User Controller - Get User Home");
+		ModelAndView mav = new ModelAndView();
+		if (!common.checkLogin(http)) {
+			mav.setViewName("redirect:/home");
+			return mav;
+		}
+		mav.addObject("res", userService.home(common.getUser(http)));
+		mav.setViewName("/user/home");
 		return mav;
 	}
 
@@ -113,12 +125,12 @@ public class UserController {
 		ModelAndView mav = new ModelAndView();
 		if (userService.login(vo)) {
 			http.getSession(true);
-			setLogin(http, vo.getId(), vo.getDate());
-			mav.setViewName("redirect:/user/portal");
-		} else {
-			mav.addObject("res", vo);
-			mav.setViewName("/user/login");
+			common.setLogin(http, vo.getId(), vo.getDate());
+			mav.setViewName("redirect:/user/home");
+			return mav;
 		}
+		mav.addObject("res", vo);
+		mav.setViewName("/user/login");
 		return mav;
 	}
 
@@ -131,19 +143,11 @@ public class UserController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/user/portal", method = RequestMethod.GET)
-	public ModelAndView getUserPortal() {
-		logger.info("User Controller - Get User Portal");
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/user/portal");
-		return mav;
-	}
-
 	@RequestMapping(value = "/user/profile", method = RequestMethod.GET)
 	public ModelAndView getUserProfile(HttpServletRequest http) {
 		logger.info("User Controller - Get User Profile");
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("res", userService.profile(getLoginId(http)));
+		mav.addObject("res", userService.profile(common.getUser(http)));
 		mav.setViewName("/user/profile");
 		return mav;
 	}
@@ -163,29 +167,6 @@ public class UserController {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("res", userService.search(vo));
 		mav.setViewName("/user/search");
-		return mav;
-	}
-
-	@RequestMapping(value = "/user/update", method = RequestMethod.GET)
-	public ModelAndView getUserUpdate(HttpServletRequest http) {
-		logger.info("User Controller - Get User Update");
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("res", userService.update(getLoginId(http)));
-		mav.setViewName("/user/update");
-		return mav;
-	}
-
-	@RequestMapping(value = "/user/update", method = RequestMethod.POST)
-	public ModelAndView postUserUpdate(HttpServletRequest http, UserUpdateVO vo) {
-		logger.info("User Controller - Post User Update");
-		ModelAndView mav = new ModelAndView();
-		vo.setId(getLoginId(http));
-		if (userService.update(vo)) {
-			mav.setViewName("redirect:/user/profile");
-		} else {
-			mav.addObject("res", vo);
-			mav.setViewName("/user/update");
-		}
 		return mav;
 	}
 }

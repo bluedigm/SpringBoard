@@ -7,9 +7,9 @@
 </head>
 <body>
 	<h1>Update Page</h1>
-	<a href="/user/portal">Return to Main page</a>
+	<a href="/home">Return to Main page</a>
 	<p>계정을 수정합니다.</p>
-	<form action="/user/update" method="post">
+	<form action="/user/edit" method="post">
 		<div>
 			<label for="username">Username</label>
 		</div>

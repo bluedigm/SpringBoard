@@ -5,7 +5,7 @@ import java.util.Date;
 public class MemberDAO {
 	int userId;
 	int boardId;
-	boolean flag;
+	boolean flagOp;
 	Date memberAt;
 	Date managerAt;
 
@@ -25,12 +25,12 @@ public class MemberDAO {
 		this.boardId = boardId;
 	}
 
-	public boolean isFlag() {
-		return flag;
+	public boolean isFlagOp() {
+		return flagOp;
 	}
 
-	public void setFlag(boolean flag) {
-		this.flag = flag;
+	public void setFlagOp(boolean flagOp) {
+		this.flagOp = flagOp;
 	}
 
 	public Date getMemberAt() {

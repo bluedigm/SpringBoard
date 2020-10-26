@@ -6,9 +6,9 @@ import com.bluedigm.springboard.entity.UserDAO;
 
 public class UserSearchVO {
 	List<UserDAO> userList;
-	int userPage;
-	int userMaxPage;
-	int userSize;
+	int page;
+	int pageMax;
+	int size;
 
 	public List<UserDAO> getUserList() {
 		return userList;
@@ -18,28 +18,27 @@ public class UserSearchVO {
 		this.userList = userList;
 	}
 
-	public int getUserPage() {
-		return userPage;
+	public int getPage() {
+		return page;
 	}
 
-	public void setUserPage(int userPage) {
-		this.userPage = userPage;
+	public void setPage(int page) {
+		this.page = page;
 	}
 
-	public int getUserMaxPage() {
-		return userMaxPage;
+	public int getPageMax() {
+		return pageMax;
 	}
 
-	public void setUserMaxPage(int userMaxPage) {
-		this.userMaxPage = userMaxPage;
+	public void setPageMax(int pageMax) {
+		this.pageMax = pageMax;
 	}
 
-	public int getUserSize() {
-		return userSize;
+	public int getSize() {
+		return size;
 	}
 
-	public void setUserSize(int userSize) {
-		this.userSize = userSize;
+	public void setSize(int size) {
+		this.size = size;
 	}
-
 }

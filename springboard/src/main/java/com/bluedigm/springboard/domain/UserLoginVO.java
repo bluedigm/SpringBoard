@@ -3,18 +3,10 @@ package com.bluedigm.springboard.domain;
 import java.util.Date;
 
 public class UserLoginVO {
-	int id;
 	String name;
 	String pw;
+	int id;
 	Date date;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
@@ -30,6 +22,14 @@ public class UserLoginVO {
 
 	public void setPw(String pw) {
 		this.pw = pw;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Date getDate() {

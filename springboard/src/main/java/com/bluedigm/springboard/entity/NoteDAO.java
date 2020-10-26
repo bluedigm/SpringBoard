@@ -2,7 +2,7 @@ package com.bluedigm.springboard.entity;
 
 import java.util.Date;
 
-public class ContentDAO {
+public class NoteDAO {
 	int id;
 	int userId;
 	int boardId;

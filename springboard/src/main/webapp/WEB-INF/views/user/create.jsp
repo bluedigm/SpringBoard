@@ -7,22 +7,22 @@
 </head>
 <body>
 	<h1>Create Page</h1>
-	<a href="home">Return to Main page</a>
+	<a href="/home">Return to Main page</a>
 	<p>계정을 생성합니다.</p>
 	<form action="/user/create" method="post">
 		<div>
-			<label for="username">Username</label>
+			<label for="user">Username</label>
 		</div>
 		<div>
-			<input type="text" value="${res.username}" placeholder="username"
-				name="username">
+			<input type="text" value="${res.user}" placeholder="username"
+				name="name">
 		</div>
 		<div>
-			<label for="nickname">Nickname</label>
+			<label for="nick">Nickname</label>
 		</div>
 		<div>
-			<input type="text" value="${res.nickname}" placeholder="nickname"
-				name="nickname">
+			<input type="text" value="${res.nick}" placeholder="nickname"
+				name="nick">
 		</div>
 		<div>
 			<label for="email">Email</label>
@@ -32,16 +32,16 @@
 				name="email">
 		</div>
 		<div>
-			<label for="password1">Password</label>
+			<label for="pw1">Password</label>
 		</div>
 		<div>
-			<input type="password" placeholder="password" name="password1">
+			<input type="password" placeholder="password" name="pw1">
 		</div>
 		<div>
-			<label for="password2">One More Password</label>
+			<label for="pw2">One More Password</label>
 		</div>
 		<div>
-			<input type="password" placeholder="password" name="password2">
+			<input type="password" placeholder="password" name="pw2">
 		</div>
 		<div>
 			<button type="submit">Create User</button>

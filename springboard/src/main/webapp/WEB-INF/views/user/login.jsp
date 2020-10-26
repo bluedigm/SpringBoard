@@ -9,7 +9,7 @@
 	<h1>Login Page</h1>
 	<a href="/home">Return to Main page</a>
 	<p>계정을 로그인합니다.</p>
-	<form action="/user/login" method="post">
+	<form id="form" action="/user/login" method="post">
 		<div>
 			<label for="name">Username</label>
 		</div>

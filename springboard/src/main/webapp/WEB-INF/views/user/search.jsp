@@ -7,15 +7,20 @@
 </head>
 <body>
 	<h1>Search Page</h1>
-	<a href="/user/portal">Return to Main page</a>
+	<a href="/home">Return to Main page</a>
 	<p>계정을 검색합니다.</p>
 	<form action="/user/search" method="post">
-		<input type="number" value="${res.userPage}" placeholder="page"
-			name="userPage"> / <input type="number"
-			value="${res.userMaxPage}" placeholder="page" name="userMaxPage" readonly="readonly">
-		[ <input type="number" value="${res.userSize}" placeholder="size"
-			name="userSize">]
-			<button type="submit"></button>
+		<p>
+			Page : <input type="number" value="${res.page}"
+				placeholder="page" name="page"> / <input type="number"
+				value="${res.pageMax}" placeholder="page" name="pageMax"
+				readonly="readonly">
+		</p>
+		<p>
+			Size : <input type="number" value="${res.size}"
+				placeholder="size" name="size">
+		</p>
+		<button type="submit">Search</button>
 	</form>
 	<table>
 		<tr>
