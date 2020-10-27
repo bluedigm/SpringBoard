@@ -18,6 +18,9 @@
 		</p>
 		<button type="submit">Search</button>
 	</form>
+	<form action="/board/create" method="get">
+		<button type="submit">Create</button>
+	</form>
 	<table>
 		<tr>
 			<th>Title</th>

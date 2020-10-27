@@ -14,7 +14,7 @@
 			<label for="user">Username</label>
 		</div>
 		<div>
-			<input type="text" value="${res.user}" placeholder="username"
+			<input type="text" value="${res.name}" placeholder="username"
 				name="name">
 		</div>
 		<div>

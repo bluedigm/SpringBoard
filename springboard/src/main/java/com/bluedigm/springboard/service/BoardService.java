@@ -1,5 +1,6 @@
 package com.bluedigm.springboard.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bluedigm.springboard.Useful;
 import com.bluedigm.springboard.domain.BoardCreateVO;
 import com.bluedigm.springboard.domain.BoardHomeVO;
 import com.bluedigm.springboard.domain.BoardSearchVO;
@@ -64,7 +66,7 @@ public class BoardService {
 
 	@Transactional
 	public boolean delete(UserDeleteVO vo) {
-		logger.info("Delete vo");
+		logger.info(Useful.getMethodName());
 		if (vo.getPw1().equals(vo.getPw2())) {
 			Optional<UserDAO> dao = userRepo.select(vo.getId());
 			if (dao.isPresent())
@@ -75,20 +77,21 @@ public class BoardService {
 	}
 
 	@Transactional(readOnly = true)
-	public BoardHomeVO home(Integer user, String link) {
-		logger.info("Home user link");
+	public BoardHomeVO home(String user, String link) {
+		logger.info(Useful.getMethodName());
 		BoardHomeVO vo = new BoardHomeVO();
 		if (user != null) {
-			Optional<BoardDAO> dao = boardRepo.select(link);
-			if (dao.isPresent()) {
-				vo.setTitle(dao.get().getTitle());
-				vo.setText(dao.get().getText());
-				vo.setLink(dao.get().getLink());
-				Optional<MemberDAO> member = memberRepo.select(user, dao.get().getId());
+			Optional<UserDAO> daoU = userRepo.select(user);
+			Optional<BoardDAO> daoB = boardRepo.select(link);
+			if (daoB.isPresent() && daoU.isPresent()) {
+				vo.setTitle(daoB.get().getTitle());
+				vo.setText(daoB.get().getText());
+				vo.setLink(daoB.get().getLink());
+				Optional<MemberDAO> member = memberRepo.select(daoU.get().getId(), daoB.get().getId());
 				if (member.isPresent()) {
 					vo.setMember(true);
 				}
-				List<JoinDAO> data = joinRepo.searchNote(dao.get(), 0, 10);
+				List<JoinDAO> data = joinRepo.searchNote(daoB.get(), 0, 10);
 				if (!data.isEmpty()) {
 					vo.setList(data);
 				}
@@ -98,7 +101,7 @@ public class BoardService {
 	}
 
 	@Transactional
-	public boolean join(Integer user, String link, boolean flag) {
+	public boolean join(String user, String link, boolean flag) {
 		logger.info("Join user link");
 		if (user != null && link != null) {
 			Optional<UserDAO> u = userRepo.select(user);
@@ -115,7 +118,7 @@ public class BoardService {
 	}
 
 	@Transactional
-	public boolean leave(Integer user, String link) {
+	public boolean leave(String user, String link) {
 		logger.info("Leave user link");
 		logger.info("Join user link");
 		if (user != null && link != null) {
@@ -179,7 +182,14 @@ public class BoardService {
 	}
 
 	@Transactional(readOnly = true)
-	public Integer check(String link) {
+	public boolean verify(String board) {
+		logger.info("Verify");
+		Optional<BoardDAO> dao = boardRepo.select(board);
+		return dao.isPresent();
+	}
+
+	@Transactional(readOnly = true)
+	public Integer getLink2Id(String link) {
 		logger.info("Check link");
 		Optional<BoardDAO> dao = boardRepo.select(link);
 		if (dao.isPresent()) {
@@ -189,7 +199,7 @@ public class BoardService {
 	}
 
 	@Transactional(readOnly = true)
-	public String check(int id) {
+	public String getId2Link(int id) {
 		logger.info("Check id");
 		Optional<BoardDAO> dao = boardRepo.select(id);
 		if (dao.isPresent()) {

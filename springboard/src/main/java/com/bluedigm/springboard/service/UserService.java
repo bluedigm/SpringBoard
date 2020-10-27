@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bluedigm.springboard.Useful;
 import com.bluedigm.springboard.domain.UserCreateVO;
 import com.bluedigm.springboard.domain.UserDeleteVO;
 import com.bluedigm.springboard.domain.UserHomeVO;
@@ -52,9 +53,9 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public UserDeleteVO delete(int id) {
-		logger.info("Delete id");
-		Optional<UserDAO> dao = userRepo.select(id);
+	public UserDeleteVO delete(String user) {
+		logger.info(Useful.getMethodName());
+		Optional<UserDAO> dao = userRepo.select(user);
 		if (dao.isPresent()) {
 			UserDeleteVO vo = new UserDeleteVO();
 			vo.setName(dao.get().getName());
@@ -66,21 +67,20 @@ public class UserService {
 	}
 
 	@Transactional
-	public boolean delete(Integer id, UserDeleteVO vo) {
-		logger.info("Delete id vo");
-		vo.setId(id);
+	public boolean delete(String user, UserDeleteVO vo) {
+		logger.info(Useful.getMethodName());
 		if (vo.getPw1().equals(vo.getPw2())) {
-			Optional<UserDAO> dao = userRepo.select(vo.getId());
+			Optional<UserDAO> dao = userRepo.select(user);
 			if (dao.isPresent())
 				if (dao.get().getPassword().equals(vo.getPw1()))
-					return userRepo.delete(vo.getId());
+					return userRepo.delete(dao.get().getId());
 		}
 		return false;
 	}
 
 	@Transactional(readOnly = true)
 	public boolean login(UserLoginVO vo) {
-		logger.info("Login vo");
+		logger.info(Useful.getMethodName());
 		Optional<UserDAO> dao = userRepo.select(vo.getName());
 		if (dao.isPresent())
 			if (dao.get().getPassword().equals(vo.getPw())) {
@@ -92,9 +92,9 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public UserHomeVO home(int id) {
-		logger.info("Home id");
-		Optional<UserDAO> dao = userRepo.select(id);
+	public UserHomeVO home(String user) {
+		logger.info(Useful.getMethodName());
+		Optional<UserDAO> dao = userRepo.select(user);
 		if (dao.isPresent()) {
 			UserHomeVO vo = new UserHomeVO();
 			vo.setNick(dao.get().getNick());
@@ -110,9 +110,9 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public UserHomeVO home(int id, UserHomeVO vo) {
-		logger.info("Home id");
-		Optional<UserDAO> dao = userRepo.select(id);
+	public UserHomeVO home(String user, UserHomeVO vo) {
+		logger.info(Useful.getMethodName());
+		Optional<UserDAO> dao = userRepo.select(user);
 		if (dao.isPresent()) {
 			vo.setNick(dao.get().getNick());
 			List<JoinDAO> data = joinRepo.searchMember(dao.get(), vo.getPage() - 1, vo.getSize());
@@ -125,9 +125,9 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public UserProfileVO profile(int id) {
-		logger.info("Profile id");
-		Optional<UserDAO> dao = userRepo.select(id);
+	public UserProfileVO profile(String user) {
+		logger.info(Useful.getMethodName());
+		Optional<UserDAO> dao = userRepo.select(user);
 		if (dao.isPresent()) {
 			UserProfileVO vo = new UserProfileVO();
 			vo.setName(dao.get().getName());
@@ -142,7 +142,7 @@ public class UserService {
 
 	@Transactional
 	public boolean reset(UserResetVO vo) {
-		logger.info("Reset vo");
+		logger.info(Useful.getMethodName());
 		if (vo.getPw1().equals(vo.getPw2())) {
 			Optional<UserDAO> dao = userRepo.select(vo.getName());
 			if (dao.isPresent()) {
@@ -157,7 +157,7 @@ public class UserService {
 
 	@Transactional(readOnly = true)
 	public UserSearchVO search() {
-		logger.info("Search");
+		logger.info(Useful.getMethodName());
 		UserSearchVO vo = new UserSearchVO();
 		vo.setPage(1);
 		vo.setSize(10);
@@ -169,7 +169,7 @@ public class UserService {
 
 	@Transactional(readOnly = true)
 	public UserSearchVO search(UserSearchVO vo) {
-		logger.info("Search vo");
+		logger.info(Useful.getMethodName());
 		vo.setUserList(userRepo.search(vo.getPage() - 1, vo.getSize()));
 		Optional<Integer> count = userRepo.count();
 		vo.setPageMax(count.get() % vo.getSize() > 0 ? count.get() / vo.getSize() + 1 : count.get() / vo.getSize());
@@ -177,9 +177,9 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public UserUpdateVO edit(int id) {
+	public UserUpdateVO edit(String user) {
 		logger.info("Edit id");
-		Optional<UserDAO> dao = userRepo.select(id);
+		Optional<UserDAO> dao = userRepo.select(user);
 		if (dao.isPresent()) {
 			UserUpdateVO vo = new UserUpdateVO();
 			vo.setName(dao.get().getName());
@@ -191,11 +191,10 @@ public class UserService {
 	}
 
 	@Transactional
-	public boolean edit(Integer id, UserUpdateVO vo) {
-		logger.info("Edit id vo");
-		vo.setId(id);
+	public boolean edit(String user, UserUpdateVO vo) {
+		logger.info(Useful.getMethodName());
 		if (vo.getPwNew1().equals(vo.getPwNew2())) {
-			Optional<UserDAO> dao = userRepo.select(vo.getId());
+			Optional<UserDAO> dao = userRepo.select(user);
 			if (dao.isPresent())
 				if (vo.getPwOld().equals(dao.get().getPassword())) {
 					dao.get().setName(vo.getName());
@@ -209,17 +208,17 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public boolean verify(int id, Date time) {
-		logger.info("Verify");
-		Optional<UserDAO> dao = userRepo.select(id);
+	public boolean verify(String user, Date time) {
+		logger.info(Useful.getMethodName());
+		Optional<UserDAO> dao = userRepo.select(user);
 		if (dao.isPresent())
 			return dao.get().getUpdateAt().equals(time);
 		return false;
 	}
 
 	@Transactional(readOnly = true)
-	public Integer check(String name) {
-		logger.info("Check name");
+	public Integer getName2Id(String name) {
+		logger.info(Useful.getMethodName());
 		Optional<UserDAO> dao = userRepo.select(name);
 		if (dao.isPresent()) {
 			return dao.get().getId();
@@ -228,8 +227,8 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public String check(int id) {
-		logger.info("Check id");
+	public String getId2Name(int id) {
+		logger.info(Useful.getMethodName());
 		Optional<UserDAO> dao = userRepo.select(id);
 		if (dao.isPresent()) {
 			return dao.get().getName();

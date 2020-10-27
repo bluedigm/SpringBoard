@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bluedigm.springboard.Useful;
 import com.bluedigm.springboard.domain.BoardCreateVO;
 import com.bluedigm.springboard.domain.BoardSearchVO;
 import com.bluedigm.springboard.domain.NoteCreateVO;
+import com.bluedigm.springboard.repository.UserRepo;
 import com.bluedigm.springboard.service.BoardService;
 import com.bluedigm.springboard.service.NoteService;
+import com.bluedigm.springboard.service.UserService;
 
 //
 @Controller
@@ -28,6 +31,8 @@ public class NoteController {
 	BoardService boardService;
 	@Autowired
 	NoteService noteService;
+	@Autowired
+	UserService userService;
 	@Autowired
 	Common common;
 
@@ -43,14 +48,23 @@ public class NoteController {
 	public ModelAndView postNoteCreate(HttpServletRequest http, NoteCreateVO vo) {
 		logger.info("Note Controller - Post Note Create");
 		ModelAndView mav = new ModelAndView();
-		vo.setUserId(common.getUser(http));
-		vo.setBoardId(common.getBoard(http));
+		vo.setUserId(userService.getName2Id(common.getUser(http)));
+		vo.setBoardId(boardService.getLink2Id(common.getBoard(http)));
 		if (noteService.create(vo)) {
-			mav.setViewName("redirect:/board/" + boardService.check(common.getBoard(http)));
+			mav.setViewName("redirect:/board/" + common.getBoard(http));
 		} else {
 			mav.addObject("res", vo);
 			mav.setViewName("note/create");
 		}
+		return mav;
+	}
+
+	@RequestMapping(value = "/note/{id}", method = RequestMethod.GET)
+	public ModelAndView getHome(HttpServletRequest http, @PathVariable("id") Integer id) {
+		logger.info(Useful.getMethodName());
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("res", noteService.home(id));
+		mav.setViewName("/note/home");
 		return mav;
 	}
 }

@@ -1,7 +1,5 @@
 package com.bluedigm.springboard.controller;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bluedigm.springboard.Useful;
+import com.bluedigm.springboard.domain.UserCreateVO;
+import com.bluedigm.springboard.domain.UserDeleteVO;
+import com.bluedigm.springboard.domain.UserLoginVO;
+import com.bluedigm.springboard.domain.UserResetVO;
+import com.bluedigm.springboard.domain.UserSearchVO;
+import com.bluedigm.springboard.domain.UserUpdateVO;
+
 /**
  * Handles requests for the application home page.
  */
@@ -27,10 +33,16 @@ public class MainController {
 	 */
 	@Autowired
 	Common common;
+	@Autowired
+	BoardController boardController;
+	@Autowired
+	NoteController noteController;
+	@Autowired
+	UserController userController;
 
 	@RequestMapping(value = { "/", "home" }, method = RequestMethod.GET)
 	public ModelAndView home(HttpServletRequest http, Locale locale, Model model) {
-		logger.info("Main Controller - Get Home");
+		logger.info(Useful.getMethodName());
 		ModelAndView mav = new ModelAndView();
 		if (common.checkLogin(http)) {
 			mav.setViewName("redirect:/user/home");
@@ -39,5 +51,4 @@ public class MainController {
 		mav.setViewName("/home");
 		return mav;
 	}
-
 }

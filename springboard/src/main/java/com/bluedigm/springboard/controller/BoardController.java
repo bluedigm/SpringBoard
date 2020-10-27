@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bluedigm.springboard.Useful;
 import com.bluedigm.springboard.domain.BoardCreateVO;
 import com.bluedigm.springboard.domain.BoardSearchVO;
 import com.bluedigm.springboard.service.BoardService;
@@ -28,18 +29,17 @@ public class BoardController {
 	Common common;
 
 	@RequestMapping(value = "/board/create", method = RequestMethod.GET)
-	public ModelAndView getBoardCreate() {
-		logger.info("Board Controller - Get Board Create");
+	public ModelAndView getCreate() {
+		logger.info(Useful.getMethodName());
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("board/create");
 		return mav;
 	}
 
 	@RequestMapping(value = "/board/create", method = RequestMethod.POST)
-	public ModelAndView postBoardCreate(HttpServletRequest http, BoardCreateVO vo) {
-		logger.info("Board Controller - Post Board Create");
+	public ModelAndView postCreate(HttpServletRequest http, BoardCreateVO vo) {
+		logger.info(Useful.getMethodName());
 		ModelAndView mav = new ModelAndView();
-		vo.setUserId(common.getUser(http));
 		if (boardService.create(vo)) {
 			mav.setViewName("redirect:/board/" + vo.getLink() + "/owner");
 		} else {
@@ -49,76 +49,15 @@ public class BoardController {
 		return mav;
 	}
 
-//	@RequestMapping(value = "/user/delete", method = RequestMethod.GET)
-//	public ModelAndView getUserDelete(HttpServletRequest http) {
-//		logger.info("User Controller - Get User Delete");
-//		ModelAndView mav = new ModelAndView();
-//		mav.addObject("res", userService.delete(getLoginId(http)));
-//		mav.setViewName("user/delete");
-//		return mav;
-//	}
-//
-//	@RequestMapping(value = "/user/delete", method = RequestMethod.POST)
-//	public ModelAndView postUserDelete(HttpServletRequest http, UserDeleteVO vo) {
-//		logger.info("User Controller - Post User Delete");
-//		ModelAndView mav = new ModelAndView();
-//		vo.setId(getLoginId(http));
-//		if (userService.delete(vo)) {
-//			mav.setViewName("redirect:/user/login");
-//		} else {
-//			mav.addObject("res", vo);
-//			mav.setViewName("user/delete");
-//		}
-//		return mav;
-//	}
-//
-//	@RequestMapping(value = "/user/login", method = RequestMethod.GET)
-//	public ModelAndView getUserLogin() {
-//		logger.info("User Controller - Get User Login");
-//		ModelAndView mav = new ModelAndView();
-//		mav.setViewName("/user/login");
-//		return mav;
-//	}
-//
-//	@RequestMapping(value = "/user/login", method = RequestMethod.POST)
-//	public ModelAndView postUserLogin(HttpServletRequest http, UserLoginVO vo) {
-//		logger.info("User Controller - Post User Login");
-//		ModelAndView mav = new ModelAndView();
-//		if (userService.login(vo)) {
-//			http.getSession(true);
-//			setLogin(http, vo.getId(), vo.getDate());
-//			mav.setViewName("redirect:/user/portal");
-//		} else {
-//			mav.addObject("res", vo);
-//			mav.setViewName("/user/login");
-//		}
-//		return mav;
-//	}
-//
-//	@RequestMapping(value = "/user/logout", method = RequestMethod.GET)
-//	public ModelAndView getUserLogout(HttpServletRequest http) {
-//		logger.info("User Controller - Get User Logout");
-//		ModelAndView mav = new ModelAndView();
-//		http.getSession(true);
-//		mav.setViewName("redirect:/user/login");
-//		return mav;
-//	}
-
-//	@RequestMapping(value = "/board/home", method = RequestMethod.GET)
-//	public ModelAndView getBoardHome(HttpServletRequest http) {
-//		logger.info("Board Controller - Get Board Home");
-//		ModelAndView mav = new ModelAndView();
-//		mav.addObject("res", boardService.home(common.getLoginId(http)));
-//		mav.setViewName("/board/home");
-//		return mav;
-//	}
-
 	@RequestMapping(value = "/board/{link}/owner", method = RequestMethod.GET)
 	public ModelAndView getOwner(HttpServletRequest http, @PathVariable("link") String link) {
 		logger.info("Get Join");
 		ModelAndView mav = new ModelAndView();
-		common.setBoard(http, boardService.check(link));
-		mav.addObject("res", boardService.join(common.getUser(http), link, true));
+		if (boardService.verify(link)) {
+			common.setBoard(http, link);
+			mav.addObject("res", boardService.join(common.getUser(http), link, true));
+			mav.setViewName("redirect:/board/" + link);
+		}
 		mav.setViewName("redirect:/board/" + link);
 		return mav;
 	}
@@ -127,7 +66,7 @@ public class BoardController {
 	public ModelAndView getJoin(HttpServletRequest http, @PathVariable("link") String link) {
 		logger.info("Get Join");
 		ModelAndView mav = new ModelAndView();
-		common.setBoard(http, boardService.check(link));
+		common.setBoard(http, link);
 		mav.addObject("res", boardService.join(common.getUser(http), link, false));
 		mav.setViewName("redirect:/board/" + link);
 		return mav;
@@ -137,32 +76,24 @@ public class BoardController {
 	public ModelAndView getLeave(HttpServletRequest http, @PathVariable("link") String link) {
 		logger.info("Get Leave");
 		ModelAndView mav = new ModelAndView();
-		common.setBoard(http, boardService.check(link));
+		common.setBoard(http, link);
 		mav.addObject("res", boardService.leave(common.getUser(http), link));
 		mav.setViewName("redirect:/board/" + link);
 		return mav;
 	}
 
 	@RequestMapping(value = "/board/{link}", method = RequestMethod.GET)
-	public ModelAndView getBoardHome(HttpServletRequest http, @PathVariable("link") String link) {
+	public ModelAndView getHome(HttpServletRequest http, @PathVariable("link") String link) {
 		logger.info("Board Controller - Get Board Home");
 		ModelAndView mav = new ModelAndView();
-		common.setBoard(http, boardService.check(link));
+		common.setBoard(http, link);
 		mav.addObject("res", boardService.home(common.getUser(http), link));
 		mav.setViewName("/board/home");
 		return mav;
 	}
-//	@RequestMapping(value = "/user/profile", method = RequestMethod.GET)
-//	public ModelAndView getUserProfile(HttpServletRequest http) {
-//		logger.info("User Controller - Get User Profile");
-//		ModelAndView mav = new ModelAndView();
-//		mav.addObject("res", userService.profile(getLoginId(http)));
-//		mav.setViewName("/user/profile");
-//		return mav;
-//	}
 
 	@RequestMapping(value = "/board/search", method = RequestMethod.GET)
-	public ModelAndView getBoardSearch() {
+	public ModelAndView getSearch() {
 		logger.info("Board Controller - Get Board Search");
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("res", boardService.search());
@@ -171,34 +102,12 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/board/search", method = RequestMethod.POST)
-	public ModelAndView postBoardSearch(BoardSearchVO vo) {
+	public ModelAndView postSearch(BoardSearchVO vo) {
 		logger.info("Board Controller - Post Board Search");
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("res", boardService.search(vo));
 		mav.setViewName("/board/search");
 		return mav;
 	}
-//
-//	@RequestMapping(value = "/user/update", method = RequestMethod.GET)
-//	public ModelAndView getUserUpdate(HttpServletRequest http) {
-//		logger.info("User Controller - Get User Update");
-//		ModelAndView mav = new ModelAndView();
-//		mav.addObject("res", userService.update(getLoginId(http)));
-//		mav.setViewName("/user/update");
-//		return mav;
-//	}
-//
-//	@RequestMapping(value = "/user/update", method = RequestMethod.POST)
-//	public ModelAndView postUserUpdate(HttpServletRequest http, UserUpdateVO vo) {
-//		logger.info("User Controller - Post User Update");
-//		ModelAndView mav = new ModelAndView();
-//		vo.setId(getLoginId(http));
-//		if (userService.update(vo)) {
-//			mav.setViewName("redirect:/user/profile");
-//		} else {
-//			mav.addObject("res", vo);
-//			mav.setViewName("/user/update");
-//		}
-//		return mav;
-//	}
+
 }

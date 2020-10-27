@@ -1,11 +1,14 @@
 package com.bluedigm.springboard.service;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bluedigm.springboard.domain.NoteCreateVO;
+import com.bluedigm.springboard.domain.NoteHomeVO;
 import com.bluedigm.springboard.entity.NoteDAO;
 import com.bluedigm.springboard.repository.BoardRepo;
 import com.bluedigm.springboard.repository.MemberRepo;
@@ -69,16 +72,19 @@ public class NoteService {
 //			}
 //		return false;
 //	}
-//
-//	public BoardHomeVO home(int id) {
-//		List<NoteDAO> data = noteRepo.searchAll(id, 0, 10);
-//		if (!data.isEmpty()) {
-//			BoardHomeVO vo = new BoardHomeVO();
-//			vo.setNoteList(data);
-//			return vo;
-//		}
-//		return null;
-//	}
+
+	public NoteHomeVO home(int id) {
+		Optional<NoteDAO> note = noteRepo.select(id);
+		if (note.isPresent()) {
+			NoteHomeVO vo = new NoteHomeVO();
+			vo.setTitle(note.get().getTitle());
+			vo.setText(note.get().getText());
+			vo.setCreateAt(note.get().getCreateAt());
+			vo.setUpdateAt(note.get().getUpdateAt());
+			return vo;
+		}
+		return null;
+	}
 //
 //	public BoardSearchVO search() {
 //		BoardSearchVO vo = new BoardSearchVO();

@@ -23,22 +23,22 @@ public class Common {
 		return http.getSession(false);
 	}
 
-	void setLogin(HttpServletRequest http, int id, Date at) {
+	void setLogin(HttpServletRequest http, String user, Date at) {
 		if (checkSession(http)) {
-			setUser(http, id);
+			setUser(http, user);
 			setDate(http, at);
 		}
 	}
 
-	Integer getUser(HttpServletRequest http) {
+	String getUser(HttpServletRequest http) {
 		if (checkSession(http))
-			return (Integer) getSession(http).getAttribute("springboard_user");
+			return (String) getSession(http).getAttribute("springboard_user");
 		return null;
 	}
 
-	void setUser(HttpServletRequest http, Integer id) {
+	void setUser(HttpServletRequest http, String user) {
 		if (checkSession(http))
-			getSession(http).setAttribute("springboard_user", id);
+			getSession(http).setAttribute("springboard_user", user);
 	}
 
 	Date getDate(HttpServletRequest http) {
@@ -52,23 +52,23 @@ public class Common {
 			getSession(http).setAttribute("springboard_date", at);
 	}
 
-	Integer getBoard(HttpServletRequest http) {
+	String getBoard(HttpServletRequest http) {
 		if (checkSession(http))
-			return (Integer) getSession(http).getAttribute("springboard_board");
+			return (String) getSession(http).getAttribute("springboard_board");
 		return null;
 	}
 
-	void setBoard(HttpServletRequest http, Integer id) {
+	void setBoard(HttpServletRequest http, String board) {
 		if (checkSession(http))
-			getSession(http).setAttribute("springboard_board", id);
+			getSession(http).setAttribute("springboard_board", board);
 	}
 
 	boolean checkLogin(HttpServletRequest http) {
 		if (checkSession(http)) {
-			Integer id = getUser(http);
+			String user = getUser(http);
 			Date time = getDate(http);
-			if (id != null && time != null) {
-				return userService.verify(id, time);
+			if (user != null && time != null) {
+				return userService.verify(user, time);
 			}
 		}
 		return false;
