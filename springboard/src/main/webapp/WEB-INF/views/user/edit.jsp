@@ -53,5 +53,17 @@
 			<button type="submit">Update User</button>
 		</div>
 	</form>
+	<form action="user/delete" method="post">
+		<script>
+			function dialog() {
+				var password = prompt('Input Password', 'password');
+				document.getElementById("input").value = password;
+				//			document.write(jbResult);
+			}
+		</script>
+		<input id="password" type="password" placeholder="password"
+			name="password" hidden="true">
+		<button type="submit" onclick="dialog()">Delete User</button>
+	</form>
 </body>
 </html>

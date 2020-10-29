@@ -3,36 +3,36 @@ package com.bluedigm.springboard.entity;
 import java.util.Date;
 
 public class NoteDAO {
-	int id;
-	int userId;
-	int boardId;
+	Integer id;
+	Integer BoardId;
+	Integer userId;
 	String title;
 	String text;
 	Date createAt;
 	Date updateAt;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public int getUserId() {
+	public Integer getBoardId() {
+		return BoardId;
+	}
+
+	public void setBoardId(Integer boardId) {
+		BoardId = boardId;
+	}
+
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
-	}
-
-	public int getBoardId() {
-		return boardId;
-	}
-
-	public void setBoardId(int boardId) {
-		this.boardId = boardId;
 	}
 
 	public String getTitle() {

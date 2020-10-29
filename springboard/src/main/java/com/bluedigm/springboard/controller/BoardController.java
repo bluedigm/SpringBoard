@@ -1,9 +1,8 @@
 package com.bluedigm.springboard.controller;
 
-import java.util.Date;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bluedigm.springboard.Useful;
 import com.bluedigm.springboard.domain.BoardCreateVO;
-import com.bluedigm.springboard.domain.BoardSearchVO;
+import com.bluedigm.springboard.domain.SearchVO;
+import com.bluedigm.springboard.entity.BoardDAO;
 import com.bluedigm.springboard.service.BoardService;
 
 //
@@ -41,7 +41,7 @@ public class BoardController {
 		logger.info(Useful.getMethodName());
 		ModelAndView mav = new ModelAndView();
 		if (boardService.create(vo)) {
-			mav.setViewName("redirect:/board/" + vo.getLink() + "/owner");
+			mav.setViewName("redirect:/board/" + vo.getLink());
 		} else {
 			mav.addObject("res", vo);
 			mav.setViewName("board/create");
@@ -49,45 +49,33 @@ public class BoardController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/board/{link}/owner", method = RequestMethod.GET)
-	public ModelAndView getOwner(HttpServletRequest http, @PathVariable("link") String link) {
-		logger.info("Get Join");
-		ModelAndView mav = new ModelAndView();
-		if (boardService.verify(link)) {
-			common.setBoard(http, link);
-			mav.addObject("res", boardService.join(common.getUser(http), link, true));
-			mav.setViewName("redirect:/board/" + link);
-		}
-		mav.setViewName("redirect:/board/" + link);
-		return mav;
-	}
-
 	@RequestMapping(value = "/board/{link}/join", method = RequestMethod.GET)
 	public ModelAndView getJoin(HttpServletRequest http, @PathVariable("link") String link) {
-		logger.info("Get Join");
+		logger.info(Useful.getMethodName());
 		ModelAndView mav = new ModelAndView();
-		common.setBoard(http, link);
-		mav.addObject("res", boardService.join(common.getUser(http), link, false));
+		mav.addObject("res", boardService.join(common.getUser(http), common.getBoard(http), false));
 		mav.setViewName("redirect:/board/" + link);
 		return mav;
 	}
 
 	@RequestMapping(value = "/board/{link}/leave", method = RequestMethod.GET)
 	public ModelAndView getLeave(HttpServletRequest http, @PathVariable("link") String link) {
-		logger.info("Get Leave");
+		logger.info(Useful.getMethodName());
 		ModelAndView mav = new ModelAndView();
-		common.setBoard(http, link);
-		mav.addObject("res", boardService.leave(common.getUser(http), link));
+		mav.addObject("res", boardService.leave(common.getUser(http), common.getBoard(http)));
 		mav.setViewName("redirect:/board/" + link);
 		return mav;
 	}
 
 	@RequestMapping(value = "/board/{link}", method = RequestMethod.GET)
 	public ModelAndView getHome(HttpServletRequest http, @PathVariable("link") String link) {
-		logger.info("Board Controller - Get Board Home");
+		logger.info(Useful.getMethodName());
 		ModelAndView mav = new ModelAndView();
-		common.setBoard(http, link);
-		mav.addObject("res", boardService.home(common.getUser(http), link));
+		Optional<BoardDAO> board = boardService.select(link);
+		if (board.isPresent()) {
+			common.setBoard(http, board.get());
+			mav.addObject("res", boardService.home(common.getUser(http), board.get()));
+		}
 		mav.setViewName("/board/home");
 		return mav;
 	}
@@ -102,7 +90,7 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/board/search", method = RequestMethod.POST)
-	public ModelAndView postSearch(BoardSearchVO vo) {
+	public ModelAndView postSearch(SearchVO<BoardDAO> vo) {
 		logger.info("Board Controller - Post Board Search");
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("res", boardService.search(vo));

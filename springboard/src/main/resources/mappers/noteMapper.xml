@@ -14,12 +14,17 @@ PUBLIC "-//mybatis.org//dtd mapper 3.0//en"
 		<result property="updateAt" column="time_update" />
 	</resultMap>
 	<insert id="insert">
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			select
+			last_insert_id()
+		</selectKey>
 		insert into note (id_user, id_board, title, text)
-		values (#{userId}, #{boardId}, #{title}, #{text})
+		values (#{boardId},
+		#{userId}, #{title}, #{text})
 	</insert>
 	<update id="update">
-		update note set id_user = #{userId}, id_board =
-		#{boardId}, title = #{title}, text = #{text} where id = #{id}
+		update note set id_board = #{boardId}, id_user =
+		#{userId}, title = #{title}, text = #{text} where id = #{id}
 	</update>
 	<delete id="delete">
 		delete from note where id = #{id}
@@ -30,11 +35,19 @@ PUBLIC "-//mybatis.org//dtd mapper 3.0//en"
 	</select>
 	<select id="searchBoard" resultMap="note">
 		select * from note where
-		id_board = #{boardId}
+		id_board = #{id}
 	</select>
 	<select id="searchBoardLimit" resultMap="note">
 		select * from note where
-		id_board = #{boardId} LIMIT #{start}, #{size}
+		id_board = #{id} LIMIT #{start}, #{size}
+	</select>
+	<select id="searchUser" resultMap="note">
+		select * from note where
+		id_user = #{id}
+	</select>
+	<select id="searchUserLimit" resultMap="note">
+		select * from note where
+		id_user = #{id} LIMIT #{start}, #{size}
 	</select>
 	<select id="count" resultType="int">
 		select count(*) from note

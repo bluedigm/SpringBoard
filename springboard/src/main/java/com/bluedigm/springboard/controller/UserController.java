@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bluedigm.springboard.Useful;
+import com.bluedigm.springboard.domain.SearchVO;
 import com.bluedigm.springboard.domain.UserCreateVO;
 import com.bluedigm.springboard.domain.UserDeleteVO;
 import com.bluedigm.springboard.domain.UserLoginVO;
 import com.bluedigm.springboard.domain.UserResetVO;
-import com.bluedigm.springboard.domain.UserSearchVO;
 import com.bluedigm.springboard.domain.UserUpdateVO;
+import com.bluedigm.springboard.entity.UserDAO;
 import com.bluedigm.springboard.service.UserService;
 
 @Controller
@@ -56,7 +57,7 @@ public class UserController {
 			mav.setViewName("redirect:/home");
 			return mav;
 		}
-		mav.addObject("res", userService.delete(common.getUser(http)));
+		mav.addObject("res", userService.select(common.getUser(http).getId()));
 		mav.setViewName("/user/delete");
 		return mav;
 	}
@@ -69,7 +70,7 @@ public class UserController {
 			mav.setViewName("redirect:/home");
 			return mav;
 		}
-		if (userService.delete(common.getUser(http), vo)) {
+		if (userService.delete(vo)) {
 			mav.setViewName("redirect:/user/login");
 			return mav;
 		}
@@ -82,7 +83,7 @@ public class UserController {
 	public ModelAndView getEdit(HttpServletRequest http) {
 		logger.info(Useful.getMethodName());
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("res", userService.edit(common.getUser(http)));
+		mav.addObject("res", userService.select(common.getUser(http).getId()));
 		mav.setViewName("/user/edit");
 		return mav;
 	}
@@ -91,7 +92,7 @@ public class UserController {
 	public ModelAndView postEdit(HttpServletRequest http, UserUpdateVO vo) {
 		logger.info(Useful.getMethodName());
 		ModelAndView mav = new ModelAndView();
-		if (userService.edit(common.getUser(http), vo)) {
+		if (userService.update(vo)) {
 			mav.setViewName("redirect:/user/profile");
 			return mav;
 		}
@@ -127,7 +128,7 @@ public class UserController {
 		ModelAndView mav = new ModelAndView();
 		if (userService.login(vo)) {
 			http.getSession(true);
-			common.setLogin(http, vo.getName(), vo.getDate());
+			common.setUser(http, vo.getUser());
 			mav.setViewName("redirect:/user/home");
 			return mav;
 		}
@@ -150,7 +151,7 @@ public class UserController {
 	public ModelAndView getProfile(HttpServletRequest http) {
 		logger.info(Useful.getMethodName());
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("res", userService.profile(common.getUser(http)));
+		mav.addObject("res", userService.select(common.getUser(http).getId()));
 		mav.setViewName("/user/profile");
 		return mav;
 	}
@@ -186,7 +187,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user/search", method = RequestMethod.POST)
-	public ModelAndView postSearch(UserSearchVO vo) {
+	public ModelAndView postSearch(SearchVO<UserDAO> vo) {
 		logger.info(Useful.getMethodName());
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("res", userService.search(vo));

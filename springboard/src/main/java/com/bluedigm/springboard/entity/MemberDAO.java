@@ -3,42 +3,34 @@ package com.bluedigm.springboard.entity;
 import java.util.Date;
 
 public class MemberDAO {
-	int userId;
-	int boardId;
-	boolean flagOp;
-	Date memberAt;
+	Integer boardId;
+	Integer userId;
+	Boolean opFlag;
 	Date managerAt;
+	Date memberAt;
 
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-	public int getBoardId() {
+	public Integer getBoardId() {
 		return boardId;
 	}
 
-	public void setBoardId(int boardId) {
+	public void setBoardId(Integer boardId) {
 		this.boardId = boardId;
 	}
 
-	public boolean isFlagOp() {
-		return flagOp;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setFlagOp(boolean flagOp) {
-		this.flagOp = flagOp;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
-	public Date getMemberAt() {
-		return memberAt;
+	public Boolean getOpFlag() {
+		return opFlag;
 	}
 
-	public void setMemberAt(Date memberAt) {
-		this.memberAt = memberAt;
+	public void setOpFlag(Boolean opFlag) {
+		this.opFlag = opFlag;
 	}
 
 	public Date getManagerAt() {
@@ -47,5 +39,13 @@ public class MemberDAO {
 
 	public void setManagerAt(Date managerAt) {
 		this.managerAt = managerAt;
+	}
+
+	public Date getMemberAt() {
+		return memberAt;
+	}
+
+	public void setMemberAt(Date memberAt) {
+		this.memberAt = memberAt;
 	}
 }

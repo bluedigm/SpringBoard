@@ -1,6 +1,7 @@
 package com.bluedigm.springboard.repository;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -18,25 +19,40 @@ public class MemberRepo {
 	static String namespace = "mappers.member";
 
 	public boolean insert(MemberDAO dao) {
-		return sql.insert(namespace + ".insert", dao) > 0;
+		try {
+			return sql.insert(namespace + ".insert", dao) > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public boolean update(MemberDAO dao) {
-		return sql.update(namespace + ".update", dao) > 0;
+		try {
+			return sql.update(namespace + ".update", dao) > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
-	public boolean delete(int user, int board) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("userId", user);
-		map.put("boardId", board);
-		return sql.delete(namespace + ".delete", map) > 0;
-	}
-
-	public Optional<MemberDAO> select(int user, int board) {
+	public boolean delete(int board, int user) {
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("userId", user);
 			map.put("boardId", board);
+			map.put("userId", user);
+			return sql.delete(namespace + ".delete", map) > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public Optional<MemberDAO> select(int board, int user) {
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("boardId", board);
+			map.put("userId", user);
 			return Optional.of(sql.selectOne(namespace + ".select", map));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -44,11 +60,21 @@ public class MemberRepo {
 		}
 	}
 
-	public List<MemberDAO> searchU(int user) {
-		return sql.selectList(namespace + ".searchUser", user);
+	public List<MemberDAO> searchByBoard(int id) {
+		try {
+			return sql.selectList(namespace + ".searchBoard", id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new LinkedList<MemberDAO>();
+		}
 	}
 
-	public List<MemberDAO> searchB(int board) {
-		return sql.selectList(namespace + ".searchBoard", board);
+	public List<MemberDAO> searchByUser(int id) {
+		try {
+			return sql.selectList(namespace + ".searchUser", id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new LinkedList<MemberDAO>();
+		}
 	}
 }

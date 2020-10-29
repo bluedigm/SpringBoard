@@ -14,8 +14,13 @@ PUBLIC "-//mybatis.org//dtd mapper 3.0//en"
 		<result property="updateAt" column="time_update" />
 	</resultMap>
 	<insert id="insert">
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			select
+			last_insert_id()
+		</selectKey>
 		insert into user (name, nick, email, password) values
-		(#{name}, #{nick}, #{email}, #{password})
+		(#{name},
+		#{nick}, #{email}, #{password})
 	</insert>
 	<update id="update">
 		update user set name = #{name}, nick = #{nick}, email

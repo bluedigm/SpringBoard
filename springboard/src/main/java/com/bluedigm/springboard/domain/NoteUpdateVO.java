@@ -2,7 +2,7 @@ package com.bluedigm.springboard.domain;
 
 import com.bluedigm.springboard.entity.UserDAO;
 
-public class UserUpdateVO {
+public class NoteUpdateVO {
 	UserDAO user;
 	String pwOld;
 	String pwNew;

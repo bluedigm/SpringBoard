@@ -18,33 +18,12 @@ public class JoinRepo {
 	@Autowired
 	SqlSession sql;
 	static String namespace = "mappers.join";
-//
-//	public Optional<Object> select(int user, int board) {
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		map.put("userId", user);
-//		map.put("boardId", board);
-//		return Optional.of(sql.selectOne(namespace + ".selectMember", map));
-//	}
-//
-//	public List<JoinDAO> searchDetailAll(int board, int page, int size) {
-//
-//		try {
-//			Map<String, Object> map = new HashMap<String, Object>();
-//			map.put("boardId", board);
-//			map.put("start", page * size);
-//			map.put("size", size);
-//			return sql.selectList(namespace + ".searchBoardLimit", map);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return new LinkedList<JoinDAO>();
-//		}
-//	}
 
-	public List<JoinDAO> searchMember(UserDAO dao, int page, int size) {
+	public List<JoinDAO> searchMember(int id, int page, int size) {
 
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("id", dao.getId());
+			map.put("id", id);
 			map.put("start", page * size);
 			map.put("size", size);
 			return sql.selectList(namespace + ".searchMemberByUserLimit", map);
@@ -54,11 +33,11 @@ public class JoinRepo {
 		}
 	}
 
-	public List<JoinDAO> searchNote(BoardDAO dao, int page, int size) {
+	public List<JoinDAO> searchNote(int id, int page, int size) {
 
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("id", dao.getId());
+			map.put("id", id);
 			map.put("start", page * size);
 			map.put("size", size);
 			return sql.selectList(namespace + ".searchNoteByBoardLimit", map);

@@ -5,34 +5,35 @@ PUBLIC "-//mybatis.org//dtd mapper 3.0//en"
 <mapper namespace="mappers.member">
 	<resultMap type="com.bluedigm.springboard.entity.MemberDAO"
 		id="member">
-		<result property="userId" column="id_user" />
 		<result property="boardId" column="id_board" />
-		<result property="flagOp" column="flag_op" />
-		<result property="memberAt" column="time_member" />
+		<result property="userId" column="id_user" />
+		<result property="opFlag" column="flag_op" />
 		<result property="managerAt" column="time_manager" />
+		<result property="memberAt" column="time_member" />
 	</resultMap>
 	<insert id="insert">
-		insert into member (id_user, id_board, flag_op)
-		values (#{userId}, #{boardId}, #{flagOp})
+		insert into member (id_board, id_user, flag_op)
+		values
+		(#{boardId}, #{userId}, #{opFlag})
 	</insert>
 	<update id="update">
-		update member set flag_op = #{flagOp} where id_user =
-		#{userId} and id_board = #{boardId}
+		update member set flag_op = #{flagOp} where id_board
+		= #{boardId} and id_user = #{userId}
 	</update>
 	<delete id="delete">
-		delete from member where id_user = #{userId} and
-		id_board = #{boardId}
+		delete from member where id_board = #{boardId} and
+		id_user = #{userId}
 	</delete>
 	<select id="select" resultMap="member">
-		select * from member where id_user
-		= #{userId} and id_board = #{boardId}
-	</select>
-	<select id="searchUser" resultMap="member">
 		select * from member where
-		id_user = #{userId}
+		id_board = #{boardId} and id_user = #{userId}
 	</select>
 	<select id="searchBoard" resultMap="member">
 		select * from member where
 		id_board = #{boardId}
+	</select>
+	<select id="searchUser" resultMap="member">
+		select * from member where
+		id_user = #{userId}
 	</select>
 </mapper>
