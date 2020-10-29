@@ -1,20 +1,11 @@
 package com.bluedigm.springboard.domain;
 
-public class UserDeleteVO {
-	int id;
+public class UserResetVO {
 	String name;
 	String nick;
 	String email;
 	String pw1;
 	String pw2;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;

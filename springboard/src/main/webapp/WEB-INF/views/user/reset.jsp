@@ -3,26 +3,33 @@
 	language="java"%>
 <html>
 <head>
-<title>User Delete</title>
+<title>User Reset</title>
 </head>
 <body>
-	<h1>Delete Page</h1>
-	<a href="/user/profile">Return to Profile page</a>
-	<p>계정을 제거합니다.</p>
-	<form action="/user/delete" method="post">
+	<h1>Reset Page</h1>
+	<a href="/home">Return to Main page</a>
+	<p>비밀번호를 초기화합니다.</p>
+	<form action="/user/reset" method="post">
 		<div>
-			<label for="name">Username</label>
+			<label for="user">Username</label>
 		</div>
 		<div>
-			<input type="text" value="${res.name}" placeholder="username"
-				name="name" readonly="readonly">
+			<input type="text" value="${res.user}" placeholder="username"
+				name="name">
 		</div>
 		<div>
 			<label for="nick">Nickname</label>
 		</div>
 		<div>
 			<input type="text" value="${res.nick}" placeholder="nickname"
-				name="nick" readonly="readonly">
+				name="nick">
+		</div>
+		<div>
+			<label for="email">Email</label>
+		</div>
+		<div>
+			<input type="email" value="${res.email}" placeholder="email@email"
+				name="email">
 		</div>
 		<div>
 			<label for="pw1">Password</label>
@@ -37,7 +44,7 @@
 			<input type="password" placeholder="password" name="pw2">
 		</div>
 		<div>
-			<button type="submit">Delete User</button>
+			<button type="submit">Reset User</button>
 		</div>
 	</form>
 </body>

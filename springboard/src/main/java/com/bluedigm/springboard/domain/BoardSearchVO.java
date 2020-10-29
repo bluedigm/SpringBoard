@@ -2,20 +2,24 @@ package com.bluedigm.springboard.domain;
 
 import java.util.List;
 
-import com.bluedigm.springboard.entity.UserDAO;
+import com.bluedigm.springboard.entity.BoardDAO;
 
-public class UserSearchVO {
-	List<UserDAO> userList;
+/**
+ * @author Yerunokasiar
+ *
+ */
+public class BoardSearchVO {
+	List<BoardDAO> list;
 	int page;
 	int pageMax;
 	int size;
 
-	public List<UserDAO> getUserList() {
-		return userList;
+	public List<BoardDAO> getList() {
+		return list;
 	}
 
-	public void setUserList(List<UserDAO> userList) {
-		this.userList = userList;
+	public void setList(List<BoardDAO> list) {
+		this.list = list;
 	}
 
 	public int getPage() {

@@ -3,22 +3,22 @@
 	language="java"%>
 <html>
 <head>
-<title>User Create</title>
+<title>User Update</title>
 </head>
 <body>
-	<h1>Create Page</h1>
+	<h1>Update Page</h1>
 	<a href="/home">Return to Main page</a>
-	<p>계정을 생성합니다.</p>
-	<form action="/user/create" method="post">
+	<p>계정을 수정합니다.</p>
+	<form action="/user/edit" method="post">
 		<div>
-			<label for="user">Username</label>
+			<label for="username">Username</label>
 		</div>
 		<div>
 			<input type="text" value="${res.name}" placeholder="username"
 				name="name">
 		</div>
 		<div>
-			<label for="nick">Nickname</label>
+			<label for="nickname">Nickname</label>
 		</div>
 		<div>
 			<input type="text" value="${res.nick}" placeholder="nickname"
@@ -32,19 +32,25 @@
 				name="email">
 		</div>
 		<div>
-			<label for="pw1">Password</label>
+			<label for="pwOld">Old Password</label>
 		</div>
 		<div>
-			<input type="password" placeholder="password" name="pw1">
+			<input type="password" placeholder="password" name="pwOld">
 		</div>
 		<div>
-			<label for="pw2">One More Password</label>
+			<label for="pwNew1">New Password</label>
 		</div>
 		<div>
-			<input type="password" placeholder="password" name="pw2">
+			<input type="password" placeholder="password" name="pwNew1">
 		</div>
 		<div>
-			<button type="submit">Create User</button>
+			<label for="pwNew2">One More New Password</label>
+		</div>
+		<div>
+			<input type="password" placeholder="password" name="pwNew2">
+		</div>
+		<div>
+			<button type="submit">Update User</button>
 		</div>
 	</form>
 </body>

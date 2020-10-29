@@ -1,15 +1,25 @@
 package com.bluedigm.springboard.controller;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.bluedigm.springboard.Useful;
+import com.bluedigm.springboard.domain.UserCreateVO;
+import com.bluedigm.springboard.domain.UserDeleteVO;
+import com.bluedigm.springboard.domain.UserLoginVO;
+import com.bluedigm.springboard.domain.UserResetVO;
+import com.bluedigm.springboard.domain.UserSearchVO;
+import com.bluedigm.springboard.domain.UserUpdateVO;
 
 /**
  * Handles requests for the application home page.
@@ -21,18 +31,24 @@ public class MainController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
+	@Autowired
+	Common common;
+	@Autowired
+	BoardController boardController;
+	@Autowired
+	NoteController noteController;
+	@Autowired
+	UserController userController;
 
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-
-		String formattedDate = dateFormat.format(date);
-
-		model.addAttribute("serverTime", formattedDate);
-
-		return "home";
+	@RequestMapping(value = { "/", "home" }, method = RequestMethod.GET)
+	public ModelAndView home(HttpServletRequest http, Locale locale, Model model) {
+		logger.info(Useful.getMethodName());
+		ModelAndView mav = new ModelAndView();
+		if (common.checkLogin(http)) {
+			mav.setViewName("redirect:/user/home");
+			return mav;
+		}
+		mav.setViewName("/home");
+		return mav;
 	}
-
 }

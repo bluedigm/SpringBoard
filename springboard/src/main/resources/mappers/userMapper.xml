@@ -3,54 +3,43 @@
 PUBLIC "-//mybatis.org//dtd mapper 3.0//en"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mappers.user">
+	<resultMap type="com.bluedigm.springboard.entity.UserDAO"
+		id="user">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="nick" column="nick" />
+		<result property="email" column="email" />
+		<result property="password" column="password" />
+		<result property="createAt" column="time_create" />
+		<result property="updateAt" column="time_update" />
+	</resultMap>
 	<insert id="insert">
-		insert into user(username,nickname,email,password)
-		values(#{username},#{nickname},#{email},#{password})
+		insert into user (name, nick, email, password) values
+		(#{name}, #{nick}, #{email}, #{password})
 	</insert>
-	<delete id="delete">
-		delete from user
-		where username = #{username}
-	</delete>
-	<select id="select">
-		select * from user
-		where username = #{username}
-	</select>
-	<select id="searchUsername">
-		select * from user
-		where {username like
-		'%#{username}%'}
-	</select>
-	<select id="searchNickname">
-		select * from user
-		where {nickname like
-		'%#{nickname}%'}
-	</select>
-	<select id="searchEmail">
-		select * from user
-		where {email like '%#{email}%'}
-	</select>
-	<select id="searchUsernameNickname">
-		select * from user
-		where {username like
-		'%#{username}%' and nickname like '%#{nickname}%'}
-	</select>
-	<select id="searchUsernameEmail">
-		select * from user
-		where {username like
-		'%#{username}%' and email like '%#{email}%'}
-	</select>
-	<select id="searchNicknameEmail">
-		select * from user
-		where {nickname like
-		'%#{nickname}%' and email like '%#{email}%'}
-	</select>
-	<select id="searchUsernameNicknameEmail">
-		select * from user
-		where {username like
-		'%#{username}%' and nickname like
-		'%#{nickname}%' and email like
-		'%#{email}%'}
-	</select>
 	<update id="update">
+		update user set name = #{name}, nick = #{nick}, email
+		= #{email}, password = #{password} where id = #{id}
 	</update>
+	<delete id="delete">
+		delete from user where id = #{id}
+	</delete>
+	<select id="selectId" resultMap="user">
+		select * from user where id =
+		#{id}
+	</select>
+	<select id="selectName" resultMap="user">
+		select * from user where name
+		= #{name}
+	</select>
+	<select id="search" resultMap="user">
+		select * from user
+	</select>
+	<select id="searchLimit" resultMap="user">
+		select * from user LIMIT
+		#{start}, #{size}
+	</select>
+	<select id="count" resultType="int">
+		select count(*) from user
+	</select>
 </mapper>

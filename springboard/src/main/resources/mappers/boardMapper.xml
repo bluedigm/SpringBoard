@@ -3,8 +3,42 @@
 PUBLIC "-//mybatis.org//dtd mapper 3.0//en"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mappers.board">
+	<resultMap type="com.bluedigm.springboard.entity.BoardDAO"
+		id="board">
+		<result property="id" column="id" />
+		<result property="link" column="link" />
+		<result property="title" column="title" />
+		<result property="text" column="text" />
+		<result property="createAt" column="time_create" />
+		<result property="updateAt" column="time_update" />
+	</resultMap>
 	<insert id="insert">
-		insert into board(title,text)
-		values(#{title},#{text})
+		insert into board (link, title, text) values
+		(#{link}, #{title}, #{text})
 	</insert>
+	<update id="update">
+		update board set link = #{link}, title = #{title},
+		text = #{text} where id = #{id}
+	</update>
+	<delete id="delete">
+		delete from board where id = #{id}
+	</delete>
+	<select id="selectId" resultMap="board">
+		select * from board where id =
+		#{id}
+	</select>
+	<select id="selectLink" resultMap="board">
+		select * from board where link
+		= #{link}
+	</select>
+	<select id="search" resultMap="board">
+		select * from board
+	</select>
+	<select id="searchLimit" resultMap="board">
+		select * from board LIMIT
+		#{start}, #{size}
+	</select>
+	<select id="count" resultType="int">
+		select count(*) from board
+	</select>
 </mapper>

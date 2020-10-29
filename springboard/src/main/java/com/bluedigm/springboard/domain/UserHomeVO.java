@@ -2,20 +2,21 @@ package com.bluedigm.springboard.domain;
 
 import java.util.List;
 
-import com.bluedigm.springboard.entity.UserDAO;
+import com.bluedigm.springboard.entity.JoinDAO;
 
-public class UserSearchVO {
-	List<UserDAO> userList;
+public class UserHomeVO {
+	List<JoinDAO> joinList;
 	int page;
 	int pageMax;
 	int size;
+	String nick;
 
-	public List<UserDAO> getUserList() {
-		return userList;
+	public List<JoinDAO> getJoinList() {
+		return joinList;
 	}
 
-	public void setUserList(List<UserDAO> userList) {
-		this.userList = userList;
+	public void setJoinList(List<JoinDAO> joinList) {
+		this.joinList = joinList;
 	}
 
 	public int getPage() {
@@ -40,5 +41,13 @@ public class UserSearchVO {
 
 	public void setSize(int size) {
 		this.size = size;
+	}
+
+	public String getNick() {
+		return nick;
+	}
+
+	public void setNick(String nick) {
+		this.nick = nick;
 	}
 }

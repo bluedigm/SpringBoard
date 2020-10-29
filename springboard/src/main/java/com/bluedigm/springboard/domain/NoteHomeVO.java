@@ -1,30 +1,15 @@
-package com.bluedigm.springboard.entity;
+package com.bluedigm.springboard.domain;
 
 import java.util.Date;
+import java.util.List;
 
-public class BoardDAO {
-	int id;
-	String link;
+import com.bluedigm.springboard.entity.JoinDAO;
+
+public class NoteHomeVO {
 	String title;
 	String text;
 	Date createAt;
 	Date updateAt;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getLink() {
-		return link;
-	}
-
-	public void setLink(String link) {
-		this.link = link;
-	}
 
 	public String getTitle() {
 		return title;

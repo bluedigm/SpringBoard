@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//dtd mapper 3.0//en"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.join">
+	<resultMap type="com.bluedigm.springboard.entity.BoardDAO"
+		id="board">
+		<result property="id" column="id" />
+		<result property="link" column="link" />
+		<result property="title" column="title" />
+		<result property="text" column="text" />
+		<result property="createAt" column="time_create" />
+		<result property="updateAt" column="time_update" />
+	</resultMap>
+	<resultMap type="com.bluedigm.springboard.entity.MemberDAO"
+		id="member">
+		<result property="userId" column="id_user" />
+		<result property="boardId" column="id_board" />
+		<result property="flagOp" column="flag_op" />
+		<result property="memberAt" column="time_member" />
+		<result property="managerAt" column="time_manager" />
+	</resultMap>
+	<resultMap type="com.bluedigm.springboard.entity.NoteDAO"
+		id="note">
+		<result property="id" column="id" />
+		<result property="userId" column="id_user" />
+		<result property="boardId" column="id_board" />
+		<result property="title" column="title" />
+		<result property="text" column="text" />
+		<result property="createAt" column="time_create" />
+		<result property="updateAt" column="time_update" />
+	</resultMap>
+	<resultMap type="com.bluedigm.springboard.entity.UserDAO"
+		id="user">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="nick" column="nick" />
+		<result property="email" column="email" />
+		<result property="password" column="password" />
+		<result property="createAt" column="time_create" />
+		<result property="updateAt" column="time_update" />
+	</resultMap>
+	<resultMap type="com.bluedigm.springboard.entity.JoinDAO"
+		id="join">
+		<collection property="board" resultMap="board"></collection>
+		<collection property="member" resultMap="member"></collection>
+		<collection property="note" resultMap="note"></collection>
+		<collection property="user" resultMap="user"></collection>
+	</resultMap>
+	<select id="searchMemberByUserLimit" resultMap="join">
+		select * from
+		member m, user u, board b where
+		m.id_user = #{id} and m.id_user = u.id
+		and m.id_board = b.id LIMIT #{start}, #{size}
+	</select>
+	<select id="searchNoteByBoardLimit" resultMap="join">
+		select * from note
+		n,
+		user u, board b where n.id_board = #{id} and n.id_board = b.id
+		and
+		n.id_user = u.id  LIMIT #{start}, #{size}
+	</select>
+</mapper>

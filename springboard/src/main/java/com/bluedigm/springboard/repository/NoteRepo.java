@@ -10,15 +10,15 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.bluedigm.springboard.entity.UserDAO;
+import com.bluedigm.springboard.entity.NoteDAO;
 
 @Repository
-public class UserRepo {
+public class NoteRepo {
 	@Autowired
 	SqlSession sql;
-	static String namespace = "mappers.user";
+	static String namespace = "mappers.note";
 
-	public boolean insert(UserDAO dao) {
+	public boolean insert(NoteDAO dao) {
 		try {
 			return sql.insert(namespace + ".insert", dao) > 0;
 		} catch (Exception e) {
@@ -27,7 +27,7 @@ public class UserRepo {
 		}
 	}
 
-	public boolean update(UserDAO dao) {
+	public boolean update(NoteDAO dao) {
 		try {
 			return sql.update(namespace + ".update", dao) > 0;
 		} catch (Exception e) {
@@ -45,7 +45,7 @@ public class UserRepo {
 		}
 	}
 
-	public Optional<UserDAO> select(int id) {
+	public Optional<NoteDAO> select(int id) {
 		try {
 			return Optional.of(sql.selectOne(namespace + ".selectId", id));
 		} catch (Exception e) {
@@ -54,34 +54,27 @@ public class UserRepo {
 		}
 	}
 
-	public Optional<UserDAO> select(String name) {
-		try {
-			return Optional.of(sql.selectOne(namespace + ".selectName", name));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Optional.empty();
-		}
-	}
-
-	public List<UserDAO> search() {
-		try {
-			return sql.selectList(namespace + ".search");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new LinkedList<UserDAO>();
-		}
-	}
-
-	public List<UserDAO> search(int page, int size) {
-
+	public List<NoteDAO> search(int board) {
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("start", page * size);
-			map.put("size", size);
-			return sql.selectList(namespace + ".searchLimit", map);
+			map.put("boardId", board);
+			return sql.selectList(namespace + ".searchBoard", map);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new LinkedList<UserDAO>();
+			return new LinkedList<NoteDAO>();
+		}
+	}
+
+	public List<NoteDAO> search(int board, int page, int size) {
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("boardId", board);
+			map.put("start", page * size);
+			map.put("size", size);
+			return sql.selectList(namespace + ".searchBoardLimit", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new LinkedList<NoteDAO>();
 		}
 	}
 
