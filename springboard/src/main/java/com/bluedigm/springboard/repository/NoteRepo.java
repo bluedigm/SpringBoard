@@ -54,10 +54,10 @@ public class NoteRepo {
 		}
 	}
 
-	public List<NoteDAO> search(int board) {
+	public List<NoteDAO> searchByBoard(int id) {
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("boardId", board);
+			map.put("id", id);
 			return sql.selectList(namespace + ".searchBoard", map);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -65,13 +65,37 @@ public class NoteRepo {
 		}
 	}
 
-	public List<NoteDAO> search(int board, int page, int size) {
+	public List<NoteDAO> searchByBoard(int id, int page, int size) {
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("boardId", board);
+			map.put("id", id);
 			map.put("start", page * size);
 			map.put("size", size);
 			return sql.selectList(namespace + ".searchBoardLimit", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new LinkedList<NoteDAO>();
+		}
+	}
+
+	public List<NoteDAO> searchByUser(int id) {
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("id", id);
+			return sql.selectList(namespace + ".searchUser", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new LinkedList<NoteDAO>();
+		}
+	}
+
+	public List<NoteDAO> searchByUser(int id, int page, int size) {
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("id", id);
+			map.put("start", page * size);
+			map.put("size", size);
+			return sql.selectList(namespace + ".searchUserLimit", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new LinkedList<NoteDAO>();

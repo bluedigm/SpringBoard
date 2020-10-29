@@ -1,9 +1,8 @@
 package com.bluedigm.springboard.controller;
 
-import java.util.Date;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,13 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bluedigm.springboard.Useful;
-import com.bluedigm.springboard.domain.BoardCreateVO;
-import com.bluedigm.springboard.domain.BoardSearchVO;
 import com.bluedigm.springboard.domain.NoteCreateVO;
-import com.bluedigm.springboard.repository.UserRepo;
+import com.bluedigm.springboard.entity.BoardDAO;
+import com.bluedigm.springboard.entity.NoteDAO;
 import com.bluedigm.springboard.service.BoardService;
-import com.bluedigm.springboard.service.NoteService;
 import com.bluedigm.springboard.service.UserService;
+import com.bluedigm.springboard.service.impl.NoteServiceImpl;
 
 //
 @Controller
@@ -30,26 +28,26 @@ public class NoteController {
 	@Autowired
 	BoardService boardService;
 	@Autowired
-	NoteService noteService;
+	NoteServiceImpl noteService;
 	@Autowired
 	UserService userService;
 	@Autowired
 	Common common;
 
 	@RequestMapping(value = "/note/create", method = RequestMethod.GET)
-	public ModelAndView getNoteCreate() {
-		logger.info("Note Controller - Get Note Create");
+	public ModelAndView getCreate() {
+		logger.info(Useful.getMethodName());
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("note/create");
 		return mav;
 	}
 
-	@RequestMapping(value = "/note/create", method = RequestMethod.POST)
-	public ModelAndView postNoteCreate(HttpServletRequest http, NoteCreateVO vo) {
-		logger.info("Note Controller - Post Note Create");
+	@RequestMapping(value = "/board/{link}/note/create", method = RequestMethod.POST)
+	public ModelAndView postCreate(HttpServletRequest http, NoteCreateVO vo, @PathVariable("link") String link) {
+		logger.info(Useful.getMethodName());
 		ModelAndView mav = new ModelAndView();
-		vo.setUserId(userService.getName2Id(common.getUser(http)));
-		vo.setBoardId(boardService.getLink2Id(common.getBoard(http)));
+		vo.setUserId(common.getUser(http).getId());
+		vo.setBoardId(common.getBoard(http).getId());
 		if (noteService.create(vo)) {
 			mav.setViewName("redirect:/board/" + common.getBoard(http));
 		} else {
@@ -63,7 +61,10 @@ public class NoteController {
 	public ModelAndView getHome(HttpServletRequest http, @PathVariable("id") Integer id) {
 		logger.info(Useful.getMethodName());
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("res", noteService.home(id));
+		Optional<NoteDAO> note = noteService.select(id);
+		if (note.isPresent()) {
+			mav.addObject("res", note.get());
+		}
 		mav.setViewName("/note/home");
 		return mav;
 	}

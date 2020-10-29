@@ -3,7 +3,7 @@ package com.bluedigm.springboard.entity;
 import java.util.Date;
 
 public class UserDAO {
-	int id;
+	Integer id;
 	String name;
 	String nick;
 	String email;
@@ -11,11 +11,11 @@ public class UserDAO {
 	Date createAt;
 	Date updateAt;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

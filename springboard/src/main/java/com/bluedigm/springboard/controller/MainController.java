@@ -18,7 +18,7 @@ import com.bluedigm.springboard.domain.UserCreateVO;
 import com.bluedigm.springboard.domain.UserDeleteVO;
 import com.bluedigm.springboard.domain.UserLoginVO;
 import com.bluedigm.springboard.domain.UserResetVO;
-import com.bluedigm.springboard.domain.UserSearchVO;
+import com.bluedigm.springboard.domain.SearchVO;
 import com.bluedigm.springboard.domain.UserUpdateVO;
 
 /**

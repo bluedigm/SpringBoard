@@ -7,19 +7,19 @@
 </head>
 <body>
 	<p>
-		<a href="/user/create">Go to Create User</a>
+		<a href="user/create">Go to Create User</a>
 	</p>
 	<p>
-		<a href="/user/login">Go to Login User</a>
+		<a href="user/login">Go to Login User</a>
 	</p>
 	<p>
-		<a href="/user/reset">Go to Reset User</a>
+		<a href="user/reset">Go to Reset User</a>
 	</p>
 	<p>
-		<a href="/user/search">Go to Search User</a>
+		<a href="user/search">Go to Search User</a>
 	</p>
 	<p>
-		<a href="/board/search">Go to Search Board</a>
+		<a href="board/search">Go to Search Board</a>
 	</p>
 </body>
 </html>
