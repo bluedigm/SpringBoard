@@ -1,9 +1,17 @@
 package com.bluedigm.springboard.domain;
 
+import java.util.Date;
+
 import com.bluedigm.springboard.entity.UserDAO;
 
 public class UserProfileVO {
-	UserDAO user;
+	Integer id;
+	String name;
+	String nick;
+	String email;
+	String pw;
+	Date createAt;
+	Date updateAt;
 	int boardPage;
 	int boardSize;
 	int contentPage;

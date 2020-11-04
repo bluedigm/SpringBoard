@@ -1,17 +1,43 @@
 package com.bluedigm.springboard.domain;
 
-import com.bluedigm.springboard.entity.UserDAO;
-
 public class UserCreateVO {
-	UserDAO user;
+	String result;
+	String name;
+	String nick;
+	String email;
 	String pw;
+	String pwNew;
 
-	public UserDAO getUser() {
-		return user;
+	public String getResult() {
+		return result;
 	}
 
-	public void setUser(UserDAO user) {
-		this.user = user;
+	public void setResult(String result) {
+		this.result = result;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getNick() {
+		return nick;
+	}
+
+	public void setNick(String nick) {
+		this.nick = nick;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPw() {
@@ -20,5 +46,13 @@ public class UserCreateVO {
 
 	public void setPw(String pw) {
 		this.pw = pw;
+	}
+
+	public String getPwNew() {
+		return pwNew;
+	}
+
+	public void setPwNew(String pwNew) {
+		this.pwNew = pwNew;
 	}
 }

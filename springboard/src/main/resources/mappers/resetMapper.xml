@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//dtd mapper 3.0//en"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.reset">
+	<resultMap type="com.bluedigm.springboard.entity.ResetDAO"
+		id="reset">
+		<result property="userId" column="id_user" />
+		<result property="code" column="code" />
+	</resultMap>
+	<insert id="insert">
+		insert into reset (id_user, code)
+		values
+		(#{userId}, #{code})
+	</insert>
+	<update id="update">
+		update reset set code = #{code} where id_user = #{userId}
+	</update>
+	<delete id="delete">
+		delete from reset where id_user = #{userId}
+	</delete>
+	<select id="select" resultMap="reset">
+		select * from reset where id_user = #{userId}
+	</select>
+	<select id="search" resultMap="reset">
+		select * from reset
+	</select>
+</mapper>

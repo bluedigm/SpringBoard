@@ -1,13 +1,19 @@
 package com.bluedigm.springboard.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bluedigm.springboard.Useful;
@@ -16,9 +22,12 @@ import com.bluedigm.springboard.domain.UserCreateVO;
 import com.bluedigm.springboard.domain.UserDeleteVO;
 import com.bluedigm.springboard.domain.UserLoginVO;
 import com.bluedigm.springboard.domain.UserResetVO;
+import com.bluedigm.springboard.domain.UserSearchVO;
 import com.bluedigm.springboard.domain.UserUpdateVO;
 import com.bluedigm.springboard.entity.UserDAO;
 import com.bluedigm.springboard.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class UserController {
@@ -36,17 +45,32 @@ public class UserController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/user/create", method = RequestMethod.POST)
-	public ModelAndView postCreate(UserCreateVO vo) {
+	@ResponseBody
+	@RequestMapping(value = "/user/create_check", method = RequestMethod.POST)
+	public String postCreateCheck(UserCreateVO vo) {
 		logger.info(Useful.getMethodName());
-		ModelAndView mav = new ModelAndView();
-		if (userService.create(vo)) {
-			mav.setViewName("redirect:/user/login");
-			return mav;
+		Optional<UserDAO> res = userService.select(vo.getName());
+		if (!vo.getName().equals("") && res.isEmpty()) {
+			return "ok";
 		}
-		mav.addObject("res", vo);
-		mav.setViewName("/user/create");
-		return mav;
+		return "";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/user/create_submit", method = RequestMethod.POST, produces = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public UserCreateVO postCreateSubmit(UserCreateVO vo) {
+		logger.info(Useful.getMethodName());
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (userService.create(vo)) {
+			if (vo.getResult() == null) {
+				vo.setResult("ok");
+			}
+		}
+		if (vo.getResult() == null) {
+			vo.setResult("Failed");
+		}
+		return vo;
 	}
 
 	@RequestMapping(value = "/user/delete", method = RequestMethod.GET)
@@ -128,13 +152,31 @@ public class UserController {
 		ModelAndView mav = new ModelAndView();
 		if (userService.login(vo)) {
 			http.getSession(true);
-			common.setUser(http, vo.getUser());
+			common.setUser(http, null);///////////
 			mav.setViewName("redirect:/user/home");
 			return mav;
 		}
 		mav.addObject("res", vo);
 		mav.setViewName("/user/login");
 		return mav;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/user/login_submit", method = RequestMethod.POST, produces = {
+			MediaType.APPLICATION_JSON_VALUE })
+	public UserLoginVO postLoginSubmit(HttpServletRequest http, UserLoginVO vo) {
+		logger.info(Useful.getMethodName());
+		if (userService.login(vo)) {
+			http.getSession(true);
+			common.setUser(http, vo.getUser());
+			if (vo.getResult() == null) {
+				vo.setResult("ok");
+			}
+		}
+		if (vo.getResult() == null) {
+			vo.setResult("Failed");
+		}
+		return vo;
 	}
 
 	@RequestMapping(value = "/user/logout", method = RequestMethod.GET)
@@ -187,7 +229,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user/search", method = RequestMethod.POST)
-	public ModelAndView postSearch(SearchVO<UserDAO> vo) {
+	public ModelAndView postSearch(UserSearchVO vo) {
 		logger.info(Useful.getMethodName());
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("res", userService.search(vo));

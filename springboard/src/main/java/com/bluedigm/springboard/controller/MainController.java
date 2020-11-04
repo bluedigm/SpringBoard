@@ -37,8 +37,8 @@ public class MainController {
 	BoardController boardController;
 	@Autowired
 	NoteController noteController;
-	@Autowired
-	UserController userController;
+//	@Autowired
+//	UserController userController;
 
 	@RequestMapping(value = { "/", "home" }, method = RequestMethod.GET)
 	public ModelAndView home(HttpServletRequest http, Locale locale, Model model) {

@@ -40,6 +40,8 @@ public class BoardController {
 	public ModelAndView postCreate(HttpServletRequest http, BoardCreateVO vo) {
 		logger.info(Useful.getMethodName());
 		ModelAndView mav = new ModelAndView();
+		
+		vo.setUserId(common.getUser(http).getId());
 		if (boardService.create(vo)) {
 			mav.setViewName("redirect:/board/" + vo.getLink());
 		} else {

@@ -1,11 +1,20 @@
 package com.bluedigm.springboard.domain;
 
 public class BoardCreateVO {
+	String result;
 	int userId;
 	int boardId;
 	String link;
 	String title;
 	String text;
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
 
 	public int getUserId() {
 		return userId;
